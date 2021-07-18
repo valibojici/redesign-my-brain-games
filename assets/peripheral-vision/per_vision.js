@@ -7,7 +7,7 @@ let resetButtons = document.getElementsByClassName('reset-time');
 let mainContainer = document.getElementById('main-container');
 let circle = document.getElementById('circle');
 let carContainer = document.getElementById('car-container');
-let timer_container = document.getElementById('timer_container');
+let timer_container = document.getElementById('timer-container');
 let countdown_container = document.getElementById('countdown');
 
 let correct_answers_span = document.getElementById('correct');
@@ -49,9 +49,21 @@ for(let button of resetButtons){
     });
 }
 
-window.onresize = e=>{
+function resizeCircleContainer()
+{
     circle.style.width = window.getComputedStyle(circle).height;
-    radius = parseFloat(circle.style.width) / 2;
+
+    let scaleXfactor = 1.8;
+    circle.style.transform = `translate(-50%, -50%) scaleX(${scaleXfactor})`;
+    while(isOverflowing(mainContainer) && scaleXfactor > 1)
+    {
+        circle.style.transform = `translate(-50%, -50%) scaleX(${scaleXfactor})`;
+        scaleXfactor -= 0.05;
+    } 
+}
+
+window.onresize = e=>{
+    resizeCircleContainer();
 };
 
 function setup_and_start()
@@ -66,7 +78,7 @@ function setup_and_start()
     incorrect_answers = 0;
     total_incorrect_answers = 0;
     total_corect_answers = 0;
-    best_reaction_time = 100000;
+    best_reaction_time = 10000000;
 
     setTimeout(()=>{
         countdown_container.textContent = '3';
@@ -78,10 +90,11 @@ function setup_and_start()
 
     setTimeout(()=>{
         countdown_container.textContent = '1';
+        setTimeout(() => {
+            countdown_container.textContent = '';
+        }, 1000);
 
         setTimeout(()=>{
-            countdown_container.textContent = '';
-            
             timer_interval = setInterval(()=>{
                 timer--;
                 timer_container.textContent = `Time left ${display_time(timer)}`;
@@ -92,7 +105,7 @@ function setup_and_start()
             }, 1000);
 
             run();
-        }, 1000)
+        }, 2000)
     
     }, 2000)
 
@@ -108,7 +121,7 @@ function run(){
     }
 
     mainContainer.style.display = 'block';
-    circle.style.width = window.getComputedStyle(circle).height;
+    resizeCircleContainer();
     let radius = parseFloat(circle.style.width) / 2;
 
     let reaction_time = window.localStorage.getItem('reaction_time') != null 
@@ -157,6 +170,7 @@ function run(){
                 let img = document.createElement('img');
                 img.src = './imgs/horse.png';
                 img.classList.add('tile', 'noselect');
+                img.style.transform = `translate(-50%, -50%) scaleX(${1 / parseFloat(circle.style.transform.substr(22))})`;
                 let radius_reduced = radius_offset * radius;
                 let left = radius + radius_reduced * Math.cos(degrees_to_radians(i)) + 'px';
                 let top = radius + radius_reduced * Math.sin(degrees_to_radians(-i)) + 'px';
@@ -284,16 +298,28 @@ function run(){
                     reaction_time += 20;
                 }
                 else if (reaction_time >= 500){
-                    reaction_time += random_int(10, 20);
+                    reaction_time += random_int(5, 10);
                 }
                 else if(reaction_time >= 300){
-                    reaction_time += random_int(5, 15)
+                    reaction_time += random_int(10, 20)
                 }
                 else if(reaction_time >= 250){
                     reaction_time += random_int(15, 25)
                 }
+                else if(reaction_time >= 200){
+                    reaction_time += random_int(30, 60);
+                }
+                else if(reaction_time >= 150){
+                    reaction_time += random_int(40, 80);
+                }
+                else if(reaction_time >= 100){
+                    reaction_time += random_int(50, 100);
+                }
+                else if(reaction_time >= 70){
+                    reaction_time += random_int(50, 120);
+                }
                 else{
-                    reaction_time += random_int(8, 18);
+                    reaction_time += random_int(50, 170);
                 }
                 window.localStorage.reaction_time = reaction_time;
                 incorrect_answers = 0;
@@ -313,12 +339,18 @@ function run(){
                     reaction_time -= random_int(65, 100);
                 }
                 else if(reaction_time >= 250){
-                    reaction_time -= random_int(30, 50);
+                    reaction_time -= random_int(35, 50);
                 }
                 else if(reaction_time >= 200){
                     reaction_time -= random_int(10, 30);
                 }
-                else reaction_time -= 15;
+                else if(reaction_time >= 140){
+                    reaction_time -= random_int(10, 15);
+                }
+                else if(reaction_time >= 70){
+                    reaction_time -= 8;
+                }
+                else reaction_time -= 5;
 
                 window.localStorage.reaction_time = reaction_time;
                 correct_answers = 0;
@@ -369,4 +401,9 @@ function remove_children(element)
     while (element.firstChild) {
         element.removeChild(element.lastChild);
     }
+}
+
+function isOverflowing(element)
+{
+    return element.clientWidth < element.scrollWidth || element.clientHeight < element.scrollHeight;
 }

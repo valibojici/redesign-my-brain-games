@@ -40,8 +40,8 @@
     background-color: rgba(39, 39, 39, 0.534);
     border-radius: 25px;
 
-    line-height: 25px;
-    font-size: 1.5rem;
+    line-height: 35px;
+    font-size: 1.3rem;
 }
 
 #results-container{
@@ -55,8 +55,8 @@
     background-color: darkgreen;
     color: white;
     border-radius: 25px;
+    font-size: 1.2rem;
     font-weight: bold;
-    letter-spacing: 2px;
 }
 
 #start-button:hover, #try-again-button:hover{
@@ -93,12 +93,14 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%) scaleX(1.8);
-    /* border: 1px solid greenyellow; */
+    /*border: 1px solid greenyellow; */
+
+    overflow: hidden;
 }
  
 .tile{
-    width: 55px;
-    height: 55px;
+    width: 75px;
+    height: 75px;
     position: absolute;
     transform: translate(-50%, -50%) scaleX(0.555); /* 0.555 = 1 / 1.8  */
 }
@@ -131,14 +133,14 @@
 
 #car-container > img{
     margin-left: 10px;
-    width: 120px;
+    width: 140px;
 }
 
 #car-container > img:hover{
     cursor: pointer;
 }
 
-#timer_container{
+#timer-container{
     position: absolute;
     left: 20px;
     top: 20px;
@@ -174,4 +176,47 @@
 
 #countdown:hover{
     cursor: default;
+}
+
+
+@media only screen and (max-width: 1600px)
+{
+    #circle{ 
+        /*border: 1px solid red;*/
+    }
+
+    #car-container > img{
+        width: 120px;
+    }
+
+    .tile{
+        width: 65px;
+        height: 65px;
+    }
+}
+
+@media only screen and (max-width: 1200px)
+{
+    #circle{
+        
+        /*border: 1px solid orange;*/
+    }
+
+    .tile{
+        width: 56px;
+        height: 56px;
+    }
+
+    #car-container > img{
+        margin-left: 10px;
+        width: 100px;
+    }
+
+    #start-container, #results-container{
+        font-size: 1rem;
+    } 
+
+    #timer-container{
+        font-size: 1.3rem;
+    }
 }
