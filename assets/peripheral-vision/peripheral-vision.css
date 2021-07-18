@@ -24,7 +24,6 @@
 
 #start-container, #results-container{
     width: 60vw;
-    height: 200px;
     position: absolute;
     
     left: 50%;
@@ -42,15 +41,20 @@
     border-radius: 25px;
 
     line-height: 25px;
+    font-size: 1.5rem;
 }
 
 #results-container{
     display: none;
 }
 
+#results-container > *{
+    margin-top: 10px;
+}
+
 #start-button, #try-again-button{
     width: 20%;
-    height: 40px;
+    padding: 10px 10px;
     margin-top: 20px;
     background-color: darkgreen;
     color: white;
@@ -59,11 +63,11 @@
     letter-spacing: 2px;
 }
 
-#start-button:hover{
+#start-button:hover, #try-again-button:hover{
     cursor: pointer;
 }
 
-#start-button:active{
+#start-button:active, #try-again-button:active{
     background-color: rgb(5, 68, 5);
 }
 
@@ -76,17 +80,17 @@
 
 #circle{
     height: 100%;
-    /* border: 1px solid greenyellow; */
     border-radius: 100%;
     position: relative;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%) scaleX(1.8);
+    /* border: 1px solid greenyellow; */
 }
  
 .tile{
-    width: 75px;
-    height: 75px;
+    width: 55px;
+    height: 55px;
     position: absolute;
     transform: translate(-50%, -50%) scaleX(0.555); /* 0.555 = 1 / 1.8  */
 }
@@ -96,7 +100,7 @@
 }
 
 .static:hover{
-    box-shadow: 0px 0px 10px 5px orange;
+    box-shadow: 0px 0px 10px 5px white;
     cursor: pointer;
 }
 
@@ -124,7 +128,6 @@
 
 #car-container > img:hover{
     cursor: pointer;
-    transform: scale(1.1);
 }
 
 #timer_container{
@@ -139,6 +142,16 @@
     display: none;
 }
 
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+}
+
 
 #countdown{
     position: absolute;
@@ -149,4 +162,8 @@
     font-size: 350%;
     font-weight: bold;
     color: white;
+}
+
+#countdown:hover{
+    cursor: default;
 }
