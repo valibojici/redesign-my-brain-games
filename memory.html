@@ -5,21 +5,40 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="memory.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;700&display=swap" rel="stylesheet"> 
     <script src="./per_vision.js" defer></script>
     <title>Memory</title>
 </head>
 <body>
+    <div id="timer_container"></div>
+    <div id="countdown"></div>
     <div id="background">
         <img src="./assets/imgs/route66.png" alt="route 66">
     </div>
+    <div id="start-container" >
+        <p>You must focus on the center of the screen where 1 type of car will appear. Using your peripheral vision you must identify and remember the position of the 'Route 66' sign. You will have limited time to do this. After this you must identify which car you saw and the position of the 'Route 66' sign. The test lasts 60 seconds.</p>
+        <button id="start-button">Start</button>
+    </div>
 
+    <div id="results-container">
+        <div>Correct answers: <span id='correct'></span></div>
+        <div>Incorrect answers: <span id='incorrect'></span></div>
+        <div>Accuracy: <span id='accuracy'></span></div>
+        <div>Best reaction time: <span id='best-react'></span></div>
+        <button id='try-again-button'>Try again</button>
+    </div>
     <div id="main-container">
-        <div id="car-container">
-            
+        
+        <div id="car-container" class="car-static">
+             
         </div>
         <div id="circle">
              
         </div>
+ 
     </div>
+ 
 </body>
 </html>
