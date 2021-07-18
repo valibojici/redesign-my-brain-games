@@ -33,19 +33,19 @@ startButton.addEventListener('click', e=>{
 
 tryagainButton.addEventListener('click', e=>{
     setup_and_start();
-})
+});
 
 for(let button of resetButtons){
     button.addEventListener('click', e=>{
         window.localStorage.removeItem('reaction_time');
-        e.target.textContent = 'Reaction time set to 500ms'
+        e.target.textContent = 'Reaction time set to 500ms';
         let background = e.target.style.background;
 
         e.target.style.background = 'transparent';
         setTimeout(()=>{
             e.target.textContent = 'Reset default reaction time';
             e.target.style.background = background;
-        }, 1500)
+        }, 1500);
     });
 }
 
@@ -323,6 +323,7 @@ function run(){
                 }
                 window.localStorage.reaction_time = reaction_time;
                 incorrect_answers = 0;
+                correct_answers = 0;
             }
             
             if(correct_answers == 3){
@@ -354,6 +355,7 @@ function run(){
 
                 window.localStorage.reaction_time = reaction_time;
                 correct_answers = 0;
+                incorrect_answers = 0;
             }
 
             setTimeout(()=>{
