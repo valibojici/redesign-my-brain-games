@@ -32,7 +32,7 @@
     padding: 25px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     border: 5px black solid;
     color: white;
@@ -46,10 +46,6 @@
 
 #results-container{
     display: none;
-}
-
-#results-container > *{
-    margin-top: 10px;
 }
 
 #start-button, #try-again-button{
@@ -69,6 +65,18 @@
 
 #start-button:active, #try-again-button:active{
     background-color: rgb(5, 68, 5);
+}
+
+.reset-time{
+    background-color: rgba(255, 11, 11, 0.596);
+    color: white;
+    padding: 5px;
+    margin-top: 30px;
+    
+}
+
+.reset-time:hover{
+    cursor: pointer;
 }
 
 #main-container {

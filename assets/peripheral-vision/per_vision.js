@@ -3,6 +3,7 @@ let startButton = document.getElementById('start-button');
 let startContainer = document.getElementById('start-container');
 let resultsContainer = document.getElementById('results-container');
 let tryagainButton = document.getElementById('try-again-button');
+let resetButtons = document.getElementsByClassName('reset-time');
 let mainContainer = document.getElementById('main-container');
 let circle = document.getElementById('circle');
 let carContainer = document.getElementById('car-container');
@@ -16,7 +17,7 @@ let best_time_span = document.getElementById('best-react');
 
 mainContainer.style.display = 'none';
 
-let timer = 60;
+let timer = 0;
 let timer_interval = null;
 
 let correct_answers = 0;
@@ -33,6 +34,20 @@ startButton.addEventListener('click', e=>{
 tryagainButton.addEventListener('click', e=>{
     setup_and_start();
 })
+
+for(let button of resetButtons){
+    button.addEventListener('click', e=>{
+        window.localStorage.removeItem('reaction_time');
+        e.target.textContent = 'Reaction time set to 500ms'
+        let background = e.target.style.background;
+
+        e.target.style.background = 'transparent';
+        setTimeout(()=>{
+            e.target.textContent = 'Reset default reaction time';
+            e.target.style.background = background;
+        }, 1500)
+    });
+}
 
 window.onresize = e=>{
     circle.style.width = window.getComputedStyle(circle).height;
@@ -201,7 +216,6 @@ function run(){
             if(fake_car_index > 3)fake_car_index = 1;
         }
 
-
         let real_car, fake_car;
         if(random_int(0, 1) == 0)
         {
@@ -259,6 +273,10 @@ function run(){
             else{
                 correct_answers++;
                 total_corect_answers++;
+
+                if(reaction_time < best_reaction_time){
+                    best_reaction_time = reaction_time;
+                }
             }
 
             if(incorrect_answers == 2){
@@ -282,11 +300,6 @@ function run(){
             }
             
             if(correct_answers == 3){
-                
-                if(reaction_time < best_reaction_time){
-                    best_reaction_time = reaction_time;
-                }
-
                 if(reaction_time >= 800){
                     reaction_time = 500;
                 }
