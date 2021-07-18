@@ -110,7 +110,7 @@
 }
 
 .static:hover{
-    box-shadow: 0px 0px 10px 5px white;
+    box-shadow: 0px 0px 2px 2px white;
     cursor: pointer;
 }
 
@@ -190,8 +190,8 @@
     }
 
     .tile{
-        width: 65px;
-        height: 65px;
+        width: 59px;
+        height: 59px;
     }
 }
 
@@ -203,8 +203,8 @@
     }
 
     .tile{
-        width: 56px;
-        height: 56px;
+        width: 53px;
+        height: 53px;
     }
 
     #car-container > img{
