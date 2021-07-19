@@ -25,7 +25,7 @@ body{
     padding: 50px;
     /* border: 1px solid red */
 
-    animation: fromRight 500ms ease-in-out;
+    animation: fromRight 600ms ease-in-out;
 
     /* transform: translate(100%, 0%); */
 }
@@ -44,21 +44,9 @@ body{
     background-color: rgba(128, 128, 128, 0.219);
     padding: 20px;
     border-radius: 45px 25px 45px 25px;
-
+    animation: appear 400ms 900ms ease backwards;
+    transform-origin: left center;
 }
-
-#instructions-container::after{
-    content: '';
-    background-color: rgb(235, 216, 191);
-    height: 100%;
-    width: 100%;
-    left: 0;
-    top: 0;
-    position: absolute;
-
-    animation: slide 200ms 600ms ease-in-out forwards;
-}
-
 
 #start-btn{
    position: relative;
@@ -103,12 +91,33 @@ body{
     }
 }
 
-@keyframes slide {
-    0%{
-        opacity: 1;
+@keyframes appear {
+    from{
+        
+        transform: scale(0);
     }
-    100%{
-        opacity: 0.85;
-        transform: translate(0%, 100%);
+    to{
+        transform: scale(1);
     }
 }
+
+.arrow{
+    position: relative;
+    width: 100px;
+    height: 100px;
+}
+
+.arrow:hover{
+    cursor: pointer ;
+    user-select: none;
+}
+
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+  }
