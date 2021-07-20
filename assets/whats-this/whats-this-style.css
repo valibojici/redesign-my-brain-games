@@ -46,11 +46,11 @@ body{
     background-color: rgba(128, 128, 128, 0.219);
     padding: 20px;
     border-radius: 45px 25px 45px 25px;
-    animation: appear 400ms 900ms ease backwards;
+    animation: appear 400ms 700ms ease backwards;
     transform-origin: left center;
 }
 
-#start-btn{
+.button{
    position: relative;
    left: 50%;
    transform: translate(-50%, 0%);
@@ -64,10 +64,8 @@ body{
    border-radius: 25px;
    font-weight: bold;
    letter-spacing: 2px;
-}
 
-.button{
-    background-color: green;
+   background-color: green;
 }
 
 .button:hover{
@@ -128,28 +126,70 @@ body{
 /*  Game styles   */
 
 .red-arrow-color > g{
-    fill: rgba(255, 30, 30, 0.507)
+    fill: rgb(102, 11, 11)
 }
 
 .green-arrow-color > g{
-    fill:rgba(15, 85, 15, 0.507)
+    fill:rgba(24, 75, 24, 0.993)
 }
 
 #game-container{
-    width: 80vw;
+    position: static; 
+    width: 100%;
+    height: 100%;  
+}
+
+#game-info-container{
+    /* border: 1px solid red; */
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+
+    position: absolute;
+    left: 50%;
+    top: 10px;
+
+    height: 10vh;
+
+    transform: translate(-50%, -10%);
+}
+
+#game-info-container > *{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#reaction-time{
+    justify-content: center;
+    text-align: center;
+    font-size: 1.2rem;
+
+    white-space: pre;
+}
+
+#correct-squares{
+    justify-content: flex-end;
+}
+
+#incorrect-squares{
+    justify-content: flex-start;
+}
+
+#game-inner-container{
+    /* border: 2px solid red; */
+    width: 90vw;
     height: 50vh;
-    border: 2px solid red;
     position: relative;
 
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 3fr 1fr;
 }
 
 #left-container, #right-container{
-    border: 1px solid aqua;
+    /* border: 1px solid aqua; */
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -163,13 +203,100 @@ body{
 }
 
 #img-container{
+    /* border: 1px solid blue; */
     overflow: hidden;
     width: 100%;
-    border: 1px solid blue;
+    height: 100%;
 }
 
 #game-item{
     width: 100%;
     height: 100%;
     object-fit: contain;
+}
+
+.square{
+    height: 25px;
+    width: 25px;
+    border: 2px solid black;
+    margin: 0px 2.5px;
+    opacity: 0.2;
+}
+
+.green-square{
+    background-color: green
+}
+
+.red-square{
+    background-color: red;
+}
+
+.active-square{
+    opacity: 0.5;
+}
+
+/* *************************************************************/
+
+/* Results styles */
+
+#results-container{
+    font-size: 1.2rem;
+    font-weight: normal;
+    overflow: hidden;
+    position: relative;
+    width: 66%;
+
+    background-color: rgba(128, 128, 128, 0.219);
+    padding: 20px;
+    border-radius: 45px 25px 45px 25px;
+    /* animation: appear 400ms 700ms ease backwards; */
+    /* transform-origin: left center; */
+
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
+    /* animation: name duration timing-function delay iteration-count direction fill-mode; */
+}
+
+#results{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#results > *{
+    margin-top: 10px;
+    font-size: 1.8rem;
+}
+
+
+
+@media screen and (max-width: 900px) {
+    #left-container, #right-container{
+        font-size: 1.8rem;
+    }
+
+    .arrow{
+        width: 50px;
+        height: 50px;
+    }
+
+    .square{
+        width: 20px;
+        height: 20px;
+    }
+
+    #reaction-time{
+        font-size: 0.85rem;
+    }
+
+    #results > *{
+        font-size: 1rem;
+    }
+
+    .button{
+        font-size: 1rem;
+    }
 }
