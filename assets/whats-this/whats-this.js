@@ -1,12 +1,44 @@
+const ITEM_NO = 50;
 const startContainer = document.getElementById('start-container');
 const gameContainer = document.getElementById('game-container');
 const resultsContainer = document.getElementById('results-container');
 const correctSquaresContainer = document.getElementById('correct-squares');
 const incorrectSquaresContainer = document.getElementById('incorrect-squares');
 
-startContainer.style.display = 'none';
-gameContainer.style.display = 'none';
-resultsContainer.style.display = 'block';
+const startBtn = document.getElementById('start-btn');
+const tryAgainBtn = document.getElementById('try-again-btn');
+
+
+gameContainer.classList.add('hide');
+resultsContainer.classList.add('hide');
+
+[startBtn, tryAgainBtn].forEach(btn => btn.addEventListener('click', setup) );
+
+function setup(event)
+{
+    console.log(1);
+
+    let itemCount = ITEM_NO;
+    
+    if(event.target === startBtn)
+    {
+        startContainer.classList.add('hide');          
+    }
+    else if(event.target === tryAgainBtn)
+    {
+        resultsContainer.classList.add('hide');
+    }
+    
+    gameContainer.classList.remove('hide');
+
+    let object = document.getElementById('game-item');
+    object.classList.add('hide');
+
+    function run(){
+
+    }
+}
+
 
 let leftArrow = document.getElementById('left-arrow');
 let rightArrow = document.getElementById('right-arrow');
@@ -20,23 +52,7 @@ window.addEventListener('keydown',e=>{
         let arrow = e.key == 'ArrowLeft' ? leftArrow : rightArrow;
         flashRed(arrow);
     }
-})
-
-for(let i=0;i<5;++i){
-    let square = document.createElement('div');
-    square.classList.add('square', 'green-square');
-    correctSquaresContainer.appendChild(square);
-
-    if(i % 2 == 0)square.classList.add('active-square')
-}
-
-for(let i=0;i<2;++i){
-    let square = document.createElement('div');
-    square.classList.add('square', 'red-square');
-    incorrectSquaresContainer.appendChild(square);
-
-    if(i==1)square.classList.add('active-square')
-}
+});
 
 function flashRed(arrow){
     arrow.classList.toggle('red-arrow-color');

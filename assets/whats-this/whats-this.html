@@ -11,7 +11,7 @@
     <script src="whats-this.js" defer></script>
 </head>
 <body>
-    <div id="start-container">
+    <div id="start-container" class="flex-container">
         <div id="title-outer">
             <h1 id='title'>What's this? Test</h1>
         </div>
@@ -22,13 +22,29 @@
         </div>
     </div>
     <div id="game-container">
+        <div id="item-no">
+            23
+        </div>
+
+        <div id="countdown">
+            3
+        </div>
         <div id="game-info-container">
-            <span id="correct-squares"></span>
-            <span id="reaction-time">Reaction time: <span id='milliseconds'>500</span> ms</span>
-            <span id="incorrect-squares"></span>
+            <span id="correct-squares" class="flex-container">
+                <span class="square green-square"></span>
+                <span class="square green-square"></span>
+                <span class="square green-square"></span>
+                <span class="square green-square"></span>
+                <span class="square green-square"></span>
+            </span>
+            <span id="img-duration" class="flex-container">Image duration: <span id='milliseconds'>500</span> ms</span>
+            <span id="incorrect-squares" class="flex-container">
+                <span class="square red-square"></span>
+                <span class="square red-square"></span>
+            </span>
         </div>
         <div id="game-inner-container">
-            <div id='left-container'>
+            <div id='left-container' class="flex-container">
                 <label for="left-arrow">TOOL</label>
                 <svg id='left-arrow' class='arrow' version="1.0" xmlns="http://www.w3.org/2000/svg" width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
        
@@ -37,12 +53,11 @@
                     </g>
                 </svg>
             </div>
-    
             <div id='img-container'>
-                <img src="./imgs/tools/1.png" alt="item" id='game-item'>
+                <img src="./imgs/tools/1.png" id='game-item'>
             </div>
     
-            <div id='right-container'>
+            <div id='right-container' class="flex-container">
                 <label for="right-arrow">
                     WRITING 
                     UTENSIL
@@ -58,7 +73,7 @@
         
     </div>
     <div id="results-container">
-        <div id='results'>
+        <div id='results' class="flex-container">
             <div>Correct answers: <span id="correct-answers">5</span></div>
             <div>Incorrect answers: <span id="incorrect-answers">22</span></div>
             <div>Accuracy: <span id="accuracy">33</span>%</div>

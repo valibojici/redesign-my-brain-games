@@ -13,7 +13,6 @@ body{
 }
 
 #start-container{
-    display: flex;
     flex-direction: column;
     align-items: center;
     height: 100vh;
@@ -139,6 +138,34 @@ body{
     height: 100%;  
 }
 
+#item-no{
+    /* border: 1px solid red; */
+    position: absolute;
+    left: 0%;
+    top: 0%;
+
+    padding: 25px;
+    font-size: 4rem;
+    font-weight: bold;
+
+    border-radius: 100%;
+    margin: 10px;
+
+    background-color: rgb(252, 231, 205);
+}
+
+#countdown{
+    left: 50%;
+    top: 50%;
+    position: absolute;
+
+    transform: translate(-50%, -50%);
+
+    font-size: 4rem;
+    font-weight: bold;
+    color: darkolivegreen;
+}
+
 #game-info-container{
     /* border: 1px solid red; */
     display: grid;
@@ -154,12 +181,11 @@ body{
 }
 
 #game-info-container > *{
-    display: flex;
     justify-content: center;
     align-items: center;
 }
 
-#reaction-time{
+#img-duration{
     justify-content: center;
     text-align: center;
     font-size: 1.2rem;
@@ -190,7 +216,6 @@ body{
 
 #left-container, #right-container{
     /* border: 1px solid aqua; */
-    display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
@@ -213,6 +238,7 @@ body{
     width: 100%;
     height: 100%;
     object-fit: contain;
+    border: none;
 }
 
 .square{
@@ -261,7 +287,6 @@ body{
 }
 
 #results{
-    display: flex;
     flex-direction: column;
     align-items: center;
 }
@@ -288,7 +313,7 @@ body{
         height: 20px;
     }
 
-    #reaction-time{
+    #img-duration{
         font-size: 0.85rem;
     }
 
@@ -299,4 +324,12 @@ body{
     .button{
         font-size: 1rem;
     }
+}
+
+.flex-container{
+    display: flex;
+}
+
+.hide{
+    display: none;
 }
