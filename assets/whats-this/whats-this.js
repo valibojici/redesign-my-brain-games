@@ -1,8 +1,9 @@
 const ITEM_NO = 50;
+let IMG_INITIAL_DURATION = document.getElementById('initial-duration').value;
+
 const startContainer = document.getElementById('start-container');
 const gameContainer = document.getElementById('game-container');
 const resultsContainer = document.getElementById('results-container');
-
 
 const startBtn = document.getElementById('start-btn');
 const tryAgainBtn = document.getElementById('try-again-btn');
@@ -18,18 +19,20 @@ function setup(event)
     console.log('setup');
 
     let itemCount = ITEM_NO;
-    let imgDuration = 500;
+    let imgDuration = IMG_INITIAL_DURATION;
     let correctAnswers = 0;
     let incorrectAnswers = 0;
+    let answers = [];
+
     const item = document.getElementById('game-item');
     const itemCounter = document.getElementById('item-no');
     const countdown = document.getElementById('countdown');
-    const imgDurationSpan = document.getElementById('img-duration')
+    const milliseconds = document.getElementById('milliseconds')
     const correctSquares = document.getElementById('correct-squares').children;
-    console.log(correctSquares);
     const incorrectSquares = document.getElementById('incorrect-squares').children;
     
 
+    milliseconds.textContent = imgDuration;
     itemCounter.textContent = `${itemCount}`;
     item.classList.add('hide');
     gameContainer.classList.remove('hide');
@@ -40,10 +43,9 @@ function setup(event)
     else if(event.target === tryAgainBtn){
         resultsContainer.classList.add('hide');
     }
-    
-
-    
-
+        
+    countdown.classList.remove('hide');
+    resetSquares();
     setTimeout(()=>{
         countdown.textContent = '3';
     }, 0);
@@ -62,10 +64,13 @@ function setup(event)
     }, 3000);
 
     function run(){
-        if(itemCounter === 0){
+        if(itemCount === 0){
             terminate();
             return;
         }
+
+        let startTime = null;
+        let endTime = null;
 
         setTimeout(()=>{
             // 0 = tool 1 = writing
@@ -81,6 +86,8 @@ function setup(event)
 
             item.classList.remove('hide');
 
+            startTime = performance.now();
+
             window.addEventListener('keydown', handleChoice);
         }, imgDuration);
 
@@ -90,6 +97,8 @@ function setup(event)
 
 
         function handleChoice(event){
+            endTime = performance.now();
+
             if(event.key === 'ArrowLeft' || event.key === 'ArrowRight'){            
                 let arrow = document.getElementById(event.key === 'ArrowLeft' ? 'left-arrow' : 'right-arrow');
                 let isCorrect = true;
@@ -97,6 +106,11 @@ function setup(event)
                     isCorrect = false;
                 }
                 
+                answers.push({
+                    time : endTime - startTime,
+                    isCorrect : isCorrect
+                });
+
                 if(isCorrect){
                     flashGreen(arrow);
 
@@ -104,7 +118,16 @@ function setup(event)
                         resetSquares();
                         correctAnswers = incorrectAnswers = 0;
 
-                        // to do modify item time here
+                        if(imgDuration > 180){
+                            imgDuration -= random_int(80, 120);
+                        }
+                        else if(imgDuration >= 80){
+                            imgDuration -= random_int(20, 30);
+                        }
+                        else if(imgDuration >= 40){
+                            imgDuration -= 10;
+                        }
+                        milliseconds.textContent = imgDuration;
                     }
                     else
                     {
@@ -118,7 +141,13 @@ function setup(event)
                         resetSquares();
                         correctAnswers = incorrectAnswers = 0;
 
-                        // to do modify item time here
+                        if(imgDuration <= 100){
+                            imgDuration += random_int(15, 30);
+                        }
+                        else if(imgDuration <= 250){
+                            imgDuration += random_int(25, 50);
+                        }
+                        milliseconds.textContent = imgDuration;
                     }
                     else
                     {
@@ -135,6 +164,40 @@ function setup(event)
                 setTimeout(run, 1000);
             }
         }
+    }
+
+    function terminate(){
+        localStorage.imgDuration = imgDuration;
+
+        let correct = 0;
+        let incorrect = 0;
+        let totalTime = 0;
+        let totalGoodTime = 0;
+        let totalBadTime = 0;
+
+        for(let answer of answers){
+            
+            if(answer.isCorrect){ 
+                correct++; 
+                totalGoodTime += answer.time;
+            }
+            else { 
+                incorrect++; 
+                totalBadTime += answer.time;
+            }
+            totalTime += answer.time;
+        }
+
+        gameContainer.classList.add('hide');
+        
+        document.getElementById('correct-answers').textContent = correct;
+        document.getElementById('incorrect-answers').textContent = incorrect;
+        document.getElementById('accuracy').textContent = `${Math.round(correct / answers.length * 100)}`;
+        document.getElementById('avg-react-time').textContent = `${Math.round(totalTime / answers.length)}`;
+        document.getElementById('correct-react-time').textContent = `${correct !== 0 ? Math.round(totalGoodTime / correct) : 0}`;
+        document.getElementById('incorrect-react-time').textContent = `${incorrect !== 0 ? Math.round(totalBadTime / incorrect) : 0}`;
+
+        resultsContainer.classList.remove('hide');
     }
 
     function resetSquares(){
@@ -163,4 +226,9 @@ function flashGreen(arrow){
 
 function random_int(min, max){
     return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
+}
+
+function updateTextInput(val){
+    IMG_INITIAL_DURATION = parseInt(val);
+    document.getElementById('initial-duration-value').textContent = val;
 }

@@ -10,12 +10,13 @@ body{
     background-color: rgb(235, 216, 191);
     width: 100vw;
     height: 100vh;
+    overflow-x: hidden;
 }
 
 #start-container{
     flex-direction: column;
     align-items: center;
-    height: 100vh;
+    height: auto;
     width: 100vw;
 
     font-weight: bold;
@@ -41,12 +42,23 @@ body{
     overflow: hidden;
     position: relative;
     width: 66%;
+    height: auto;
 
     background-color: rgba(128, 128, 128, 0.219);
     padding: 20px;
     border-radius: 45px 25px 45px 25px;
     animation: appear 400ms 700ms ease backwards;
     transform-origin: left center;
+    
+}
+
+#instructions-container > label, #initial-duration{
+    display: block;
+}
+
+#instructions{
+    line-height: 150%;
+    font-size: 1.5rem;
 }
 
 .button{
@@ -144,13 +156,18 @@ body{
     left: 0%;
     top: 0%;
 
-    padding: 25px;
+    /* padding: 25px; */
     font-size: 4rem;
     font-weight: bold;
 
     border-radius: 100%;
     margin: 10px;
 
+    width: 90px;
+    height: 90px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: rgb(252, 231, 205);
 }
 

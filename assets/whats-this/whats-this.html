@@ -17,8 +17,10 @@
         </div>
 
         <div id="instructions-container">
-            <p id='instructions'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus nulla officiis quas consequuntur veniam ab. Quidem possimus fuga quis recusandae harum exercitationem ipsam earum, iure, culpa, nostrum saepe ducimus. Itaque error ipsa officiis voluptatibus exercitationem cupiditate. Rem voluptas tempora iste quam voluptate, ipsum aliquam laudantium itaque dolores veniam repudiandae labore ratione quia dignissimos, minus eaque porro distinctio sunt. Voluptate voluptatem mollitia corporis hic minus vel eveniet quaerat omnis ipsam possimus nisi maiores perspiciatis quos excepturi sit rerum odio necessitatibus ullam magnam unde quae molestias, modi impedit maxime! Unde itaque velit dolorum nihil, laboriosam explicabo aspernatur eum dicta, eos, culpa voluptatum.</p>
+            <p id='instructions'>You will see some images of tools or writing utensils (things that are used to write with/on) for a small amount of time. Use the arrow keys to choose if the object shown is a tool (LEFT ARROW) or writing utensil (RIGHT ARROW). For every 6 correct answers the image duration decreases and for every 3 wrong answers the image duration increases. The default image duration is 300ms. The default object count is 50.</p>
             <button id='start-btn' class="button">START</button>
+            <label for="initial-duration">Initial object duration: <span id='initial-duration-value'>300</span>ms</label>
+            <input type="range" id="initial-duration" min="30" max="500" step="10" value="300" onpointermove="updateTextInput(this.value);">
         </div>
     </div>
     <div id="game-container">
