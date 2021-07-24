@@ -113,10 +113,8 @@ function setup_and_start()
 
  
 function run(){
-    if (timer == 0)
-    {
+    if (timer == 0){
         terminate();
-        
         return;
     }
 

@@ -130,8 +130,7 @@ body{
           -ms-user-select: none; /* Internet Explorer/Edge */
               user-select: none; /* Non-prefixed version, currently
                                     supported by Chrome, Edge, Opera and Firefox */
-  }
-
+}
 
 /********************************************************************/
 /*  Game styles   */
@@ -193,6 +192,7 @@ body{
     top: 10px;
 
     height: 10vh;
+    width: 40%;
 
     transform: translate(-50%, -10%);
 }
@@ -316,6 +316,24 @@ body{
 
 
 @media screen and (max-width: 900px) {
+    /* Start */
+    #title{
+        font-size: 3rem;
+    }
+
+    #instructions{
+        line-height: 150%;
+        font-size: 1.1rem;
+    }
+
+    /* Game */ 
+
+    #item-no{
+        width: 60px;
+        height: 60px;
+        font-size: 2rem;
+    }
+
     #left-container, #right-container{
         font-size: 1.8rem;
     }

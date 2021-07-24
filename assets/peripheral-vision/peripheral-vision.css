@@ -34,10 +34,11 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    border: 5px black solid;
+    /* border-bottom: 3px black solid; */
+    /* border-right: 5px black solid; */
     color: white;
     
-    background-color: rgba(39, 39, 39, 0.534);
+    background-color: rgba(26, 23, 23, 0.863);
     border-radius: 25px;
 
     line-height: 35px;
