@@ -84,9 +84,19 @@ function setup(event)
             item.src = `./imgs/${dir}/${imgIndex}.png`;
             item.type = dir;
 
-            item.classList.remove('hide');
 
-            startTime = performance.now();
+            if(item.complete){
+                item.classList.remove('hide');
+                startTime = performance.now();
+            } else {
+                item.addEventListener('load', e =>{
+                    item.classList.remove('hide');
+                    startTime = performance.now();
+                })
+            }
+            
+
+            
 
             window.addEventListener('keydown', handleChoice);
         }, imgDuration);
@@ -118,13 +128,13 @@ function setup(event)
                         resetSquares();
                         correctAnswers = incorrectAnswers = 0;
 
-                        if(imgDuration > 180){
-                            imgDuration -= random_int(80, 120);
+                        if(imgDuration > 200){
+                            imgDuration -= 40
                         }
                         else if(imgDuration >= 80){
-                            imgDuration -= random_int(20, 30);
+                            imgDuration -= 30;
                         }
-                        else if(imgDuration >= 40){
+                        else if(imgDuration >= 60){
                             imgDuration -= 10;
                         }
                         milliseconds.textContent = imgDuration;
@@ -141,11 +151,14 @@ function setup(event)
                         resetSquares();
                         correctAnswers = incorrectAnswers = 0;
 
-                        if(imgDuration <= 100){
-                            imgDuration += random_int(15, 30);
+                        if(imgDuration <= 80){
+                            imgDuration += 20
                         }
-                        else if(imgDuration <= 250){
-                            imgDuration += random_int(25, 50);
+                        else if(imgDuration <= 140){
+                            imgDuration += 30
+                        }
+                        else{
+                            imgDuration += 40;
                         }
                         milliseconds.textContent = imgDuration;
                     }
