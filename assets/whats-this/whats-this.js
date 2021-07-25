@@ -74,7 +74,7 @@ function setup(event)
 
         setTimeout(()=>{
             // 0 = tool 1 = writing
-            let imgIndex = random_int(1, 18);
+            let imgIndex = random_int(1, 25);
             let dir = random_int(0, 1) === 0 ? 'tools' : 'writing';
             
             // item.classList.add('hide');
