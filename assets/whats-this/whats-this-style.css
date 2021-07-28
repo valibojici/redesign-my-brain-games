@@ -112,6 +112,10 @@ body{
     }
 }
 
+
+/********************************************************************/
+/*  Game styles   */
+
 .arrow{
     position: relative;
     width: 100px;
@@ -132,8 +136,7 @@ body{
                                     supported by Chrome, Edge, Opera and Firefox */
 }
 
-/********************************************************************/
-/*  Game styles   */
+
 
 .red-arrow-color > g{
     fill: rgb(102, 11, 11)
@@ -360,6 +363,8 @@ body{
         font-size: 1rem;
     }
 }
+
+/* Misc */ 
 
 .flex-container{
     display: flex;
