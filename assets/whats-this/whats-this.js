@@ -1,5 +1,10 @@
-const ITEM_NO = 50;
-let IMG_INITIAL_DURATION = document.getElementById('initial-duration').value;
+var ITEM_NO = 50;
+var IMG_INITIAL_DURATION = document.getElementById('initial-duration').value;
+
+document.getElementById('initial-duration-value').textContent = document.getElementById('initial-duration').value;
+document.getElementById('initial-count-value').textContent = document.getElementById('initial-count').value;
+
+
 
 const startContainer = document.getElementById('start-container');
 const gameContainer = document.getElementById('game-container');
@@ -11,6 +16,8 @@ const tryAgainBtn = document.getElementById('try-again-btn');
 
 gameContainer.classList.add('hide');
 resultsContainer.classList.add('hide');
+
+
 
 [startBtn, tryAgainBtn].forEach(btn => btn.addEventListener('click', setup) );
 
@@ -241,7 +248,12 @@ function random_int(min, max){
     return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
 }
 
-function updateTextInput(val){
+function updateDurationText(val){
     IMG_INITIAL_DURATION = parseInt(val);
     document.getElementById('initial-duration-value').textContent = val;
+}
+
+function updateCountText(val){
+    ITEM_NO = parseInt(val);
+    document.getElementById('initial-count-value').textContent = val;
 }

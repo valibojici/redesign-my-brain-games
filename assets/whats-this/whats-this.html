@@ -19,8 +19,12 @@
         <div id="instructions-container">
             <p id='instructions'>You will see some images of tools or writing utensils (things that are used to write with/on) for a small amount of time. Use the arrow keys to choose if the object shown is a tool (LEFT ARROW) or writing utensil (RIGHT ARROW). For every 6 correct answers the image duration decreases and for every 3 wrong answers the image duration increases. The default image duration is 300ms. The default object count is 50.</p>
             <button id='start-btn' class="button">START</button>
+
             <label for="initial-duration">Initial object duration: <span id='initial-duration-value'>300</span>ms</label>
-            <input type="range" id="initial-duration" min="50" max="500" step="10" value="300" onpointermove="updateTextInput(this.value);">
+            <input type="range" id="initial-duration" min="50" max="500" step="25" value="300" oninput = "updateDurationText(this.value);">
+
+            <label for="initial-count">Initial object count: <span id='initial-count-value'>50</span></label>
+            <input type="range" id="initial-count" min="10" max="200" step="10" value="50" oninput = "updateCountText(this.value);">
         </div>
     </div>
     <div id="game-container">
