@@ -29,7 +29,7 @@
     </div>
 
     <div id="game-container" class="hide">
-        <div id="item-no"> 50 </div>
+        <div id="rounds"> 50 </div>
 
         <div id="countdown"> 3 </div>
         
@@ -46,6 +46,21 @@
                 <span class="square red-square"></span>
                 <span class="square red-square"></span>
             </span>
+        </div>
+
+        <div id="game-inner-container" class="flex-container">
+            <p id="symbol">E</p>
+            <div id="input-container" class="grid-container">
+                <div id='first-digit-container'>
+                    <label id='first-digit-label' for="first-digit" class='preserve-space digit-label'>First digit: </label>
+                    <input type="text" id='first-digit' maxlength="1">
+                </div>
+                <div id='second-digit-container'>
+                    <label id='second-digit-label' for="second-digit" class='preserve-space digit-label'>Second digit: </label>
+                    <input type="text" id='second-digit' maxlength="1">
+                </div>
+                <button id='confirm-button'>CONFIRM</button>
+            </div>
         </div>
 
     </div>

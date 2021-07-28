@@ -120,6 +120,8 @@ body{
     font-size: 4rem;
     font-weight: bold;
     color: darkolivegreen;
+
+    cursor: default;
 }
 
 #game-info-container{
@@ -142,7 +144,7 @@ body{
     align-items: center;
 }
 
-#item-no{
+#rounds{
     /* border: 1px solid red; */
     position: absolute;
     left: 0%;
@@ -191,6 +193,86 @@ body{
     opacity: 0.5;
 }
 
+#game-inner-container{
+    border: 1px solid red;
+    width: 100vw;
+    height: 100vh;
+
+    justify-content: center;
+    align-items: center;
+}
+
+#symbol{
+    font-size: 6rem;
+    font-family: sans-serif;
+}
+
+#input-container{
+    grid-template-areas:
+    'digit1 digit2'
+    'confirm confirm';
+
+    border: 1px solid blue;
+
+    height: 300px;
+    width: 700px;
+
+    justify-content: space-evenly;
+    align-content: space-around;
+}
+
+#input-container > *{
+    margin: 10px;
+}
+
+.digit-label{
+    font-size: 2.5rem;
+}
+
+#first-digit, #second-digit{
+    border: none;
+    width: 2.6rem;
+    height: 2.6rem;
+    
+    text-align: center;
+    font-size: 2.5rem;
+}
+ 
+#first-digit-container{
+    grid-area: digit1;
+}
+
+#second-digit-container{
+    grid-area: digit2;
+}
+
+#confirm-button{
+    /* display: inline-block; */
+    border: none;
+
+    grid-area: confirm;
+
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    height: 100%;
+
+    border-radius: 25px;
+
+    background-color: rgb(105, 134, 105);
+    color: white;
+    font-size: 1rem;
+}
+
+#confirm-button:hover{
+    cursor: pointer;
+}
+
+#confirm-button:active{
+    background-color: rgb(80, 110, 80);
+}
+
+
 /* Results styles */
 
 #results-container{
@@ -203,15 +285,11 @@ body{
     background-color: rgba(128, 128, 128, 0.219);
     padding: 20px;
     border-radius: 45px 25px 45px 25px;
-    /* animation: appear 400ms 700ms ease backwards; */
-    /* transform-origin: left center; */
 
     left: 50%;
     top: 50%;
 
     transform: translate(-50%, -50%);
-
-    /* animation: name duration timing-function delay iteration-count direction fill-mode; */
 }
 
 #results{
@@ -239,7 +317,7 @@ body{
 
     /* Game */ 
 
-    #item-no{
+    #rounds{
         width: 60px;
         height: 60px;
         font-size: 2rem;
@@ -276,6 +354,10 @@ body{
 
 .flex-container{
     display: flex;
+}
+
+.grid-container{
+    display: grid;
 }
 
 .hide{
