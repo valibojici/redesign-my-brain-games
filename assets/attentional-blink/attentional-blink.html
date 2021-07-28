@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./attentional-blink.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="./attentional-blink.js" defer></script>
+    <title>Attentional blink</title>
+</head>
+<body>
+    <div id="start-container" class="flex-container">
+        <div id="title-outer">
+            <h1 id='title'>Attentional blink test</h1>
+        </div>
+
+        <div id="instructions-container">
+            <p id='instructions'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Facere soluta, optio quae iure ad quos deserunt ipsa aperiam minus quis autem consequuntur? Corrupti consectetur cum impedit quis similique. Distinctio, facere? Doloremque eligendi quos provident! Assumenda eligendi fuga sunt aliquid quibusdam? Omnis aspernatur temporibus exercitationem unde inventore dolores dolor ea repellendus.</p>
+            <button id='start-btn' class="button">START</button>
+
+            <label for="initial-duration">Initial symbol duration: <span id='initial-duration-value'>300</span>ms</label>
+            <input type="range" id="initial-duration" min="50" max="500" step="25" value="300" oninput = "updateDurationText(this.value);">
+            <br>
+            <label for="initial-count">Total runs: <span id='initial-count-value'>50</span></label>
+            <input type="range" id="initial-count" min="10" max="200" step="10" value="50" oninput = "updateCountText(this.value);">
+        </div>
+    </div>
+
+    <div id="game-container" class="hide">
+        <div id="item-no"> 50 </div>
+
+        <div id="countdown"> 3 </div>
+        
+        <div id="game-info-container">
+            <span id="correct-squares" class="flex-container">
+                <span class="square green-square"></span>
+                <span class="square green-square"></span>
+                <span class="square green-square"></span>
+                <span class="square green-square"></span>
+                <span class="square green-square"></span>
+            </span>
+            <span class="flex-container preserve-space">Symbol duration: <span id='milliseconds'>500</span> ms</span>
+            <span id="incorrect-squares" class="flex-container">
+                <span class="square red-square"></span>
+                <span class="square red-square"></span>
+            </span>
+        </div>
+
+    </div>
+
+    <div id="results-container" class="hide">
+        <div id='results' class="flex-container">
+            <div>Correct answers: <span id="correct-answers">5</span></div>
+            <div>Incorrect answers: <span id="incorrect-answers">22</span></div>
+            <div>Accuracy: <span id="accuracy">33</span>%</div>
+            <div>Average reaction time: <span id="avg-react-time">599</span>ms</div>
+            <div>Average reaction time for correct answers: <span id="correct-react-time">300</span>ms</div>
+            <div>Average reaction time for incorrect answers: <span id="incorrect-react-time">333</span>ms</div>
+        </div>
+        <button id='try-again-btn' class="button">Try again</button>
+    </div>
+
+</body>
+</html>
