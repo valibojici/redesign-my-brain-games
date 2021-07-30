@@ -1,4 +1,4 @@
-var TOTAL_ROUNDS = 50;
+var TOTAL_ROUNDS = document.getElementById('initial-count').value;;
 var INITIAL_DURATION = document.getElementById('initial-duration').value;
 
 document.getElementById('initial-duration-value').textContent = document.getElementById('initial-duration').value;
@@ -44,16 +44,7 @@ function setup(event)
     symbol.classList.add('hide');
     inputContainer.classList.add('hide');
     
-    let symbolList = [];
-    for(let i=0; i<random_int(15, 25); ++i){
-        let letterCode = random_int(65, 65 + 26 - 1);
-        let letter = String.fromCharCode(letterCode);
-        while(symbolList[symbolList.length - 1] === letter){
-            letterCode = random_int(65, 65 + 26 - 1);
-            letter = String.fromCharCode(letterCode);
-        }
-        symbolList.push(letter);
-    }
+    let symbolList = getSymbols();
 
     console.log(symbolList);
 
@@ -93,6 +84,10 @@ function setup(event)
                 }, symbolDuration)
             }
             symbol.textContent = symbolList[index];
+            symbol.style.color = 'black';
+            if(symbolList[index] >= 1 && symbols[index] <= 9 && random_int(0, 2) === 0){
+                symbol.style.color = 'red';   
+            }
             index++;
             setTimeout(loopAsync, symbolDuration);
         }
@@ -282,4 +277,34 @@ function updateDurationText(val){
 function updateCountText(val){
     TOTAL_ROUNDS = parseInt(val);
     document.getElementById('initial-count-value').textContent = val;
+}
+
+function getSymbols(){
+    symbols = [];
+    let length = random_int(15, 25);
+    for(let i=0; i<length; ++i){
+        let letterCode = random_int(65, 65 + 26 - 1);
+        let letter = String.fromCharCode(letterCode);
+        if(i > 4 && i < length - 4 && random_int(0, 2) == 0){
+            symbols.push(' ');
+            if(random_int(0, 1) == 0){
+                symbols.push(' ');
+                symbols.push(' ');
+            }
+        }
+        while(symbols[symbols.length - 1] === letter || letter === 'I' || letter === 'O'){
+            letterCode = random_int(65, 65 + 26 - 1);
+            letter = String.fromCharCode(letterCode);
+        }
+        symbols.push(letter);
+    }
+    let digit1Index = random_int(4, symbols.length - 8);
+    let digit2Index = random_int(digit1Index+3,digit1Index + 5);
+
+    symbols[digit1Index] = random_int(1, 9);
+    symbols[digit2Index] = random_int(1, 9);
+    while(symbols[digit2Index] === symbols[digit1Index]){
+        symbols[digit2Index] = random_int(1, 9);
+    }
+    return symbols;
 }
