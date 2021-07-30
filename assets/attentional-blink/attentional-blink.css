@@ -194,7 +194,7 @@ body{
 }
 
 #game-inner-container{
-    border: 1px solid red;
+    /* border: 1px solid red; */
     width: 100vw;
     height: 100vh;
 
@@ -208,11 +208,12 @@ body{
 }
 
 #input-container{
+    /* border: 1px solid blue; */
+
     grid-template-areas:
     'digit1 digit2'
     'confirm confirm';
 
-    border: 1px solid blue;
 
     height: 300px;
     width: 700px;
