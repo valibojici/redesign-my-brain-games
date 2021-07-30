@@ -30,6 +30,7 @@ function setup(event)
     let answers = [];
 
     const symbol = document.getElementById('symbol');
+    const inputContainer = document.getElementById('input-container');
     const countdown = document.getElementById('countdown');
     const roundCounter = document.getElementById('rounds')
     const milliseconds = document.getElementById('milliseconds')
@@ -41,7 +42,21 @@ function setup(event)
     roundCounter.textContent = `${rounds}`;
 
     symbol.classList.add('hide');
+    inputContainer.classList.add('hide');
     
+    let symbolList = [];
+    for(let i=0; i<random_int(15, 25); ++i){
+        let letterCode = random_int(65, 65 + 26 - 1);
+        let letter = String.fromCharCode(letterCode);
+        while(symbolList[symbolList.length - 1] === letter){
+            letterCode = random_int(65, 65 + 26 - 1);
+            letter = String.fromCharCode(letterCode);
+        }
+        symbolList.push(letter);
+    }
+
+    console.log(symbolList);
+
     if(event.target === startBtn){
         startContainer.classList.add('hide');          
     }
@@ -69,7 +84,22 @@ function setup(event)
     }, 3000);
 
     function run(){
+        symbol.classList.remove('hide');
+        let index = 0;
+        function loopAsync(){
+            if(index === symbolList.length){
+                setTimeout(()=>{
+                    symbol.classList.add('hide');
+                }, symbolDuration)
+            }
+            symbol.textContent = symbolList[index];
+            index++;
+            setTimeout(loopAsync, symbolDuration);
+        }
+
+        setTimeout(loopAsync, 1000);
         return;
+
         if(rounds === 0){
             terminate();
             return;

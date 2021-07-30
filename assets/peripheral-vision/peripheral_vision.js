@@ -131,7 +131,7 @@ function run(){
 
     function draw_static_tiles()
     {
-        for(let i = 15 + 7.5; i < 360 + 15 + 7.5  ; i += 45)
+        for(let i = 15 + 7.5, j=0; i < 360 + 15 + 7.5; i += 45, j++)
         {
             let img = document.createElement('img');
             img.src = './imgs/static.png';
@@ -210,7 +210,7 @@ function run(){
     // after reaction time milliseconds remove everything and draw static
     setTimeout(() => {
         remove_children(circle);
-        draw_static_tiles();
+        draw_static_tiles(route66_index);
         remove_children(carContainer);
         carContainer.style.backgroundImage = 'url("./imgs/static.png")';
     }, reaction_time);
@@ -239,15 +239,15 @@ function run(){
             fake_car = addCar(fake_car_index);
             real_car = addCar(car_index);
         }
-        real_car.isCorrect = 'true';
-        fake_car.isCorrect = 'false';
+        real_car.isCorrect = true;
+        fake_car.isCorrect = false;
 
         real_car.addEventListener('click', handle_car_click);
         fake_car.addEventListener('click', handle_car_click);
 
         function handle_car_click(e)
         {
-            if(e.target.isCorrect == 'false'){
+            if(!e.target.isCorrect){
                 wrong_answer = true;
             }
 
@@ -260,7 +260,7 @@ function run(){
             let index = 0;
             for(let tile of circle.children)
             {
-                tile.isCorrect = (index == route66_index ? 'true' : 'false');
+                tile.isCorrect = (index === route66_index);
                 tile.addEventListener('click', handle_tile_click);
                 index++;
             }
@@ -268,7 +268,7 @@ function run(){
 
         function handle_tile_click(e)
         {
-            if(e.target.isCorrect == 'false'){
+            if(!e.target.isCorrect){
                 wrong_answer = true;
             }
 
@@ -278,7 +278,7 @@ function run(){
 
             remove_children(circle);
 
-            if(wrong_answer == true){
+            if(wrong_answer){
                 incorrect_answers++;
                 total_incorrect_answers++;
             }
