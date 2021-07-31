@@ -1,10 +1,14 @@
-var TOTAL_ROUNDS = parseInt(document.getElementById('initial-count').value);
-var INITIAL_DURATION = parseInt(document.getElementById('initial-duration').value);
+var FAST_ROUNDS = parseInt(document.getElementById("initial-fast-count").value);
+var SLOW_ROUNDS = parseInt(document.getElementById("initial-slow-count").value);
+var TOTAL_ROUNDS = FAST_ROUNDS + SLOW_ROUNDS;
+var INITIAL_FAST_DURATION = parseInt(document.getElementById('initial-fast-duration').value);
+var INITIAL_SLOW_DURATION = parseInt(document.getElementById('initial-slow-duration').value);
 
-document.getElementById('initial-duration-value').textContent = document.getElementById('initial-duration').value;
-document.getElementById('initial-count-value').textContent = document.getElementById('initial-count').value;
 
-
+document.getElementById('initial-slow-duration-value').textContent = document.getElementById('initial-slow-duration').value;
+document.getElementById('initial-fast-duration-value').textContent = document.getElementById('initial-fast-duration').value;
+document.getElementById('initial-slow-value').textContent = document.getElementById('initial-slow-count').value;
+document.getElementById('initial-fast-value').textContent = document.getElementById('initial-fast-count').value;
 
 const startContainer = document.getElementById('start-container');
 const gameContainer = document.getElementById('game-container');
@@ -18,35 +22,35 @@ const tryAgainBtn = document.getElementById('try-again-btn');
 
 function setup(event)
 {
-    startContainer.classList.add('hide');
-    gameContainer.classList.remove('hide');
-
-    let rounds = TOTAL_ROUNDS;
-    let symbolDuration = INITIAL_DURATION;
+    FAST_ROUNDS = parseInt(document.getElementById("initial-fast-count").value);
+    SLOW_ROUNDS = parseInt(document.getElementById("initial-slow-count").value);
+    TOTAL_ROUNDS = FAST_ROUNDS + SLOW_ROUNDS;
+    INITIAL_FAST_DURATION = parseInt(document.getElementById('initial-fast-duration').value);
+    INITIAL_SLOW_DURATION = parseInt(document.getElementById('initial-slow-duration').value);
     
-    let tests = generateTests(TOTAL_ROUNDS);
+    let rounds = 0;
+    let symbolDuration = SLOW_ROUNDS === 0 ? INITIAL_FAST_DURATION : INITIAL_SLOW_DURATION;
+    let changedToFastRuns = SLOW_ROUNDS === 0 ? true : false;
+    let tests = generateTests(SLOW_ROUNDS, FAST_ROUNDS);
     console.log(tests);
 
     const symbol = document.getElementById('symbol');
     const inputContainer = document.getElementById('input-container');
-    const countdown = document.getElementById('countdown');
     const roundCounter = document.getElementById('rounds')
     const milliseconds = document.getElementById('milliseconds')
-    
-    milliseconds.textContent = symbolDuration;
-    roundCounter.textContent = `${rounds}`;
+    const countdown = document.getElementById('countdown');
 
+    startContainer.classList.add('hide');
+    resultsContainer.classList.add('hide');
+    gameContainer.classList.remove('hide');
+    
+    countdown.classList.remove('hide');
     symbol.classList.add('hide');
     inputContainer.classList.add('hide');
+    
+    milliseconds.textContent = `${symbolDuration}ms ${changedToFastRuns ? '(fast)' : '(slow)'}`;
+    roundCounter.textContent = `${TOTAL_ROUNDS}`;
 
-    if(event.target === startBtn){
-        startContainer.classList.add('hide');          
-    }
-    else if(event.target === tryAgainBtn){
-        resultsContainer.classList.add('hide');
-    }
-        
-    countdown.classList.remove('hide');
     resetSquares();
 
     setTimeout(()=>{
@@ -67,13 +71,18 @@ function setup(event)
     }, 3000);
 
     function run(){
-        rounds--;
-        if(rounds < 0){
+        if(rounds === TOTAL_ROUNDS){
             terminate();
+            return;
         }
 
-        milliseconds.textContent = symbolDuration;
-        roundCounter.textContent = rounds + 1;
+        if(!changedToFastRuns && tests[rounds].isQuick){
+            changedToFastRuns = true;
+            symbolDuration = INITIAL_FAST_DURATION;
+            resetSquares();
+        }
+        
+        milliseconds.textContent = `${symbolDuration}ms ${changedToFastRuns ? '(fast)' : '(slow)'}`;
 
         symbol.classList.remove('hide');
         drawSymbols(tests[rounds].symbolList, symbolDuration, symbol, handleInput);
@@ -113,12 +122,15 @@ function setup(event)
             }
             tests[rounds].isCorrect = (firstDigit === tests[rounds].firstDigit && secondDigit === tests[rounds].secondDigit);
             
-            symbolDuration = checkAnswer(tests[rounds].isCorrect, symbolDuration);
+            symbolDuration = checkAnswer(tests[rounds].isCorrect, tests[rounds].isQuick, symbolDuration);
 
-            let confirmButton = document.getElementById('confirm-button');
-            confirmButton.removeEventListener('click', checkInput);
+            document.getElementById('confirm-button').removeEventListener('click', checkInput);
 
             inputContainer.classList.add('hide');
+
+            roundCounter.textContent = roundCounter.textContent - 1;
+
+            rounds++;
             setTimeout(run, 1500);
         }
     }
@@ -126,6 +138,31 @@ function setup(event)
     function terminate(){
         gameContainer.classList.add('hide');
         resultsContainer.classList.remove('hide');
+
+        let correctSlowAnswers = 0, incorrectSlowAnswers = 0, correctFastAnswers = 0, incorrectFastAnswers = 0;
+        tests.forEach(test =>{
+            if(test.isQuick){
+                if(test.isCorrect){
+                    correctFastAnswers++;
+                } else {
+                    incorrectFastAnswers++;
+                }
+            } else {
+                if(test.isCorrect){
+                    correctSlowAnswers++;
+                } else {
+                    incorrectSlowAnswers++;
+                }
+            }
+        });
+
+        document.getElementById("correct-slow-answers").textContent = correctSlowAnswers;
+        document.getElementById("incorrect-slow-answers").textContent = incorrectSlowAnswers;
+        document.getElementById("correct-fast-answers").textContent = correctFastAnswers;
+        document.getElementById("incorrect-fast-answers").textContent = incorrectFastAnswers;
+        document.getElementById("slow-accuracy").textContent = Math.round(100 * correctSlowAnswers / (correctSlowAnswers + incorrectSlowAnswers));
+        document.getElementById("fast-accuracy").textContent = Math.round(100* correctFastAnswers / (correctFastAnswers + incorrectFastAnswers));
+        document.getElementById("overall-accuracy").textContent = Math.round(100 * (correctSlowAnswers + correctFastAnswers) / (correctSlowAnswers + incorrectSlowAnswers + correctFastAnswers + incorrectFastAnswers));
         return;
     }
 }
@@ -148,27 +185,34 @@ function updateCountText(val){
     document.getElementById('initial-count-value').textContent = val;
 }
 
+function updateText(id, val){
+    document.getElementById(id).textContent = val;
+}
+
 function generateSymbols(isQuick){
     symbols = [];
-    let length = random_int(15, 23);
+    let length = random_int(15, 20);
+    let spaceChance = 3;
+
     for(let i=0; i<length; ++i){
         let letterCode = random_int(65, 65 + 26 - 1);
         let letter = String.fromCharCode(letterCode);
-        if(i > 4 && i < length - 4 && random_int(0, 2) == 0){
+        if(i > 4 && i < length - 4 && random_int(1, spaceChance) == 1){
             symbols.push(' ');
+            spaceChance++;
             if(random_int(0, 1) == 0){
                 symbols.push(' ');
                 symbols.push(' ');
             }
         }
-        while(symbols[symbols.length - 1] === letter || letter === 'I' || letter === 'O'){
+        while(symbols[symbols.length - 1] === letter || letter === 'O'){
             letterCode = random_int(65, 65 + 26 - 1);
             letter = String.fromCharCode(letterCode);
         }
         symbols.push(letter);
     }
 
-    let digit1Index = random_int(4, symbols.length - 8);
+    let digit1Index = random_int(3, symbols.length - 6);
     let digit2Index = random_int(digit1Index+2,digit1Index + 3);
 
     if(isQuick){
@@ -183,10 +227,11 @@ function generateSymbols(isQuick){
     return symbols;
 }
 
-function generateTests(length){
+function generateTests(slow, fast){
     let temp = [];
-    for(let i=0; i<length; ++i){
-        let symbols = generateSymbols((i < length / 2));
+    for(let i=0; i < slow + fast; ++i){
+
+        let symbols = generateSymbols((i >= slow));
         let firstDigit = -1, secondDigit = -1;
 
         for(let symbol of symbols){
@@ -195,38 +240,37 @@ function generateTests(length){
                     firstDigit = symbol;
                 } else {
                     secondDigit = symbol;
+                    break;
                 }
             }
         }
 
         temp.push({
             symbolList : symbols,
-            isQuick : (i < length / 2),
+            isQuick : (i >= slow),
             firstDigit : firstDigit,
             secondDigit : secondDigit
         });
     }
-    return shuffle(temp);
+    return temp;
 }
 
-function shuffle(sourceArray) {
-    // https://stackoverflow.com/a/3718452
-    for (var i = 0; i < sourceArray.length - 1; i++) {
-        var j = i + Math.floor(Math.random() * (sourceArray.length - i));
+// function shuffle(sourceArray) {
+//     // https://stackoverflow.com/a/3718452
+//     for (var i = 0; i < sourceArray.length - 1; i++) {
+//         var j = i + Math.floor(Math.random() * (sourceArray.length - i));
 
-        var temp = sourceArray[j];
-        sourceArray[j] = sourceArray[i];
-        sourceArray[i] = temp;
-    }
-    return sourceArray;
-}
+//         var temp = sourceArray[j];
+//         sourceArray[j] = sourceArray[i];
+//         sourceArray[i] = temp;
+//     }
+//     return sourceArray;
+// }
 
 function drawSymbols(symbolList, duration, symbolContainer, callback){
     let index = 0;
     let firstDigitPassed = false;
-    
-    console.log(index, symbolList, duration, symbolContainer, callback);
-    
+        
     loopAsync();
     function loopAsync(){
         if(index === symbolList.length){
@@ -263,7 +307,7 @@ function resetSquares(){
     }
 }
 
-function checkAnswer(isCorrect, symbolDuration){
+function checkAnswer(isCorrect, isQuick, symbolDuration){
     let squares = document.getElementsByClassName(`${isCorrect ? 'green' : 'red'}-square`);
     let ok = false;
     console.log(squares);
@@ -283,7 +327,11 @@ function checkAnswer(isCorrect, symbolDuration){
     // else must update time and reset squares
     resetSquares();
     if(isCorrect){
-        return symbolDuration - 10;
+        if(isQuick){
+            return symbolDuration - 10 >= 50 ? symbolDuration - 10 : 50;    
+        } else {
+            return symbolDuration - 25 >= 50 ? symbolDuration - 10 : 50;
+        }
     } else {
         return symbolDuration + 20;
     }

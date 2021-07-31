@@ -20,11 +20,17 @@
             <p id='instructions'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Facere soluta, optio quae iure ad quos deserunt ipsa aperiam minus quis autem consequuntur? Corrupti consectetur cum impedit quis similique. Distinctio, facere? Doloremque eligendi quos provident! Assumenda eligendi fuga sunt aliquid quibusdam? Omnis aspernatur temporibus exercitationem unde inventore dolores dolor ea repellendus.</p>
             <button id='start-btn' class="button">START</button>
 
-            <label for="initial-duration">Initial symbol duration: <span id='initial-duration-value'>300</span>ms</label>
-            <input type="range" id="initial-duration" min="50" max="500" step="25" value="100" oninput = "updateDurationText(this.value);">
+            <label for="initial-slow-duration">Initial symbol duration (slow) : <span id='initial-slow-duration-value'></span>ms</label>
+            <input type="range" id="initial-slow-duration" min="50" max="400" step="25" value="125" oninput = "updateText('initial-slow-duration-value', this.value);">
             <br>
-            <label for="initial-count">Total runs: <span id='initial-count-value'>50</span></label>
-            <input type="range" id="initial-count" min="10" max="200" step="10" value="50" oninput = "updateCountText(this.value);">
+            <label for="initial-fast-duration">Initial symbol duration (fast) : <span id='initial-fast-duration-value'></span>ms</label>
+            <input type="range" id="initial-fast-duration" min="50" max="400" step="25" value="200" oninput = "updateText('initial-fast-duration-value', this.value);">
+            <br>
+            <label for="initial-slow-count">Total slow runs: <span id='initial-slow-value'></span></label>
+            <input type="range" id="initial-slow-count" min="0" max="50" step="5" value="15" oninput = "updateText('initial-slow-value', this.value);">
+            <br>
+            <label for="initial-fast-count">Total fast runs: <span id='initial-fast-value'></span></label>
+            <input type="range" id="initial-fast-count" min="0" max="50" step="5" value="15" oninput = "updateText('initial-fast-value', this.value);">
         </div>
     </div>
 
@@ -39,7 +45,7 @@
                 <span class="square green-square"></span>
                 <span class="square green-square"></span>
             </span>
-            <span class="flex-container preserve-space">Symbol duration: <span id='milliseconds'>500</span> ms</span>
+            <span id="symbol-duration" class="flex-container preserve-space">Symbol duration: <span id='milliseconds'>500</span></span>
             <span id="incorrect-squares" class="flex-container">
                 <span class="square red-square"></span>
                 <span class="square red-square"></span>
@@ -65,12 +71,13 @@
 
     <div id="results-container" class="hide">
         <div id='results' class="flex-container">
-            <div>Correct answers: <span id="correct-answers">5</span></div>
-            <div>Incorrect answers: <span id="incorrect-answers">22</span></div>
-            <div>Accuracy: <span id="accuracy">33</span>%</div>
-            <div>Average reaction time: <span id="avg-react-time">599</span>ms</div>
-            <div>Average reaction time for correct answers: <span id="correct-react-time">300</span>ms</div>
-            <div>Average reaction time for incorrect answers: <span id="incorrect-react-time">333</span>ms</div>
+            <div>Correct answers (slow): <span id="correct-slow-answers">5</span></div>
+            <div>Incorrect answers (slow): <span id="incorrect-slow-answers">22</span></div>
+            <div>Accuracy (slow): <span id="slow-accuracy">33</span>%</div>
+            <div>Correct answers (fast): <span id="correct-fast-answers">5</span></div>
+            <div>Incorrect answers (fast): <span id="incorrect-fast-answers">22</span></div>
+            <div>Accuracy (fast): <span id="fast-accuracy">33</span>%</div>
+            <div>Overall accuracy: <span id="overall-accuracy">33</span>%</div>
         </div>
         <button id='try-again-btn' class="button">Try again</button>
     </div>
