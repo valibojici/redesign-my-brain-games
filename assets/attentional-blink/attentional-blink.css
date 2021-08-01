@@ -51,10 +51,22 @@ hr{
     animation: appear 400ms 700ms ease backwards;
     transform-origin: left center;
     
+    align-items: center;
+    flex-direction: column;
+
 }
 
-#instructions-container > label, #initial-duration{
-    display: block;
+.input-container{
+    padding: 10px;
+    width: 100%;
+}
+
+.input-container:first-of-type{
+    margin-top: 15px;
+}
+
+.input-container > *{
+    margin-left: 10px;
 }
 
 #instructions{
@@ -63,9 +75,9 @@ hr{
 }
 
 .button{
-   position: relative;
+   /* position: relative;
    left: 50%;
-   transform: translate(-50%, 0%);
+   transform: translate(-50%, 0%); */
    margin-top: 30px;
 
    width: 20%;
@@ -138,7 +150,7 @@ hr{
     top: 10px;
 
     height: 10vh;
-    width: 40%;
+    width: 60%;
 
     transform: translate(-50%, -10%);
 }
@@ -161,8 +173,8 @@ hr{
     border-radius: 100%;
     margin: 10px;
 
-    width: 120px;
-    height: 120px;
+    width: 110px;
+    height: 110px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -295,6 +307,9 @@ hr{
     top: 50%;
 
     transform: translate(-50%, -50%);
+
+    justify-content: center;
+    flex-direction: column;
 }
 
 #results{
@@ -302,7 +317,7 @@ hr{
     align-items: center;
 }
 
-#results > *{
+#results > div{
     margin-top: 10px;
     font-size: 1.8rem;
 }
@@ -313,11 +328,24 @@ hr{
     /* Start */
     #title{
         font-size: 3rem;
+        padding: 20px;
+    }
+
+    #instructions-container{
+        
     }
 
     #instructions{
         line-height: 150%;
         font-size: 1.1rem;
+    }
+
+    .input-container{
+        font-size: 1rem;
+    }
+
+    .input-container{
+        padding: 7px 0px;
     }
 
     /* Game */ 
@@ -328,30 +356,28 @@ hr{
         font-size: 2rem;
     }
 
-    #left-container, #right-container{
-        font-size: 1.8rem;
-    }
-
-    .arrow{
-        width: 50px;
-        height: 50px;
-    }
-
     .square{
         width: 20px;
         height: 20px;
     }
 
-    #img-duration{
-        font-size: 0.85rem;
-    }
 
-    #results > *{
-        font-size: 1rem;
+    #results > div{
+        font-size: 1.3rem;
     }
 
     .button{
         font-size: 1rem;
+        width: 50%;
+        margin-top: 15px;
+    }
+
+    #game-info-container{
+        width: 80%;
+    }
+
+    #symbol{
+        font-size: 6rem;
     }
 }
 
@@ -380,5 +406,5 @@ hr{
 }
 
 .preserve-space{
-    white-space: pre;
+    white-space: pre-wrap;
 }
