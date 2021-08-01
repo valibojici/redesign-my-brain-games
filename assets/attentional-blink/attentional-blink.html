@@ -6,7 +6,8 @@
     <link rel="stylesheet" href="./attentional-blink.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Roboto+Mono:wght@400&display=swap" rel="stylesheet">
+
     <script src="./attentional-blink.js" defer></script>
     <title>Attentional blink</title>
 </head>
@@ -72,11 +73,17 @@
     <div id="results-container" class="hide">
         <div id='results' class="flex-container">
             <div>Correct answers (slow): <span id="correct-slow-answers">5</span></div>
+            <br>
             <div>Incorrect answers (slow): <span id="incorrect-slow-answers">22</span></div>
+            <br>
             <div>Accuracy (slow): <span id="slow-accuracy">33</span>%</div>
+            <br>
             <div>Correct answers (fast): <span id="correct-fast-answers">5</span></div>
+            <br>
             <div>Incorrect answers (fast): <span id="incorrect-fast-answers">22</span></div>
+            <br>
             <div>Accuracy (fast): <span id="fast-accuracy">33</span>%</div>
+            <hr>
             <div>Overall accuracy: <span id="overall-accuracy">33</span>%</div>
         </div>
         <button id='try-again-btn' class="button">Try again</button>
