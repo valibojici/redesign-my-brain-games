@@ -228,7 +228,8 @@ hr{
 
     grid-template-areas:
     'digit1 digit2'
-    'confirm confirm';
+    'confirm confirm'
+    'error error';
 
 
     height: 300px;
@@ -263,10 +264,7 @@ hr{
     grid-area: digit2;
 }
 
-#confirm-button{
-    /* display: inline-block; */
-    border: none;
-
+#confirm-text{
     grid-area: confirm;
 
     width: 50%;
@@ -274,19 +272,21 @@ hr{
     margin-right: auto;
     height: 100%;
 
-    border-radius: 25px;
+    color: black;
+    font-size: 2rem;
 
-    background-color: rgb(105, 134, 105);
-    color: white;
-    font-size: 1rem;
+    text-align: center;
+    font-weight: 300;
 }
 
-#confirm-button:hover{
-    cursor: pointer;
-}
-
-#confirm-button:active{
-    background-color: rgb(80, 110, 80);
+#error-msg{
+    grid-area: error;
+    margin: auto;
+    text-align: center;
+    width: 50%;
+    
+    font-size: 1.5rem;
+    color: red;
 }
 
 

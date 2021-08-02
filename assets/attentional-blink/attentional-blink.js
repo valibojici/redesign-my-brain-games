@@ -17,8 +17,11 @@ const resultsContainer = document.getElementById('results-container');
 const startBtn = document.getElementById('start-btn');
 const tryAgainBtn = document.getElementById('try-again-btn');
  
-
-[startBtn, tryAgainBtn].forEach(btn => btn.addEventListener('click', setup) );
+startBtn.addEventListener('click', setup);
+tryAgainBtn.addEventListener('click', e=>{
+    resultsContainer.classList.add('hide');
+    startContainer.classList.remove('hide');
+});
 
 function setup(event)
 {
@@ -94,42 +97,54 @@ function setup(event)
             let firstDigitInput = document.getElementById('first-digit');
             let secondDigitInput = document.getElementById('second-digit');
 
+            [firstDigitInput, secondDigitInput].forEach(btn=>
+                btn.addEventListener('focus', e=>{
+                    e.target.value = '';
+                    e.target.textContent = '';
+            }));
+
             firstDigitInput.focus();
             
             firstDigitInput.addEventListener('input',e=>{
-                secondDigitInput.focus();
+                if(secondDigitInput.value == ''){
+                    secondDigitInput.focus();
+                }
             });
 
             secondDigitInput.addEventListener('input',e=>{
-                confirmButton.focus();
+                secondDigitInput.blur();
             })
 
             firstDigitInput.value = '';
             secondDigitInput.value = '';
-            let confirmButton = document.getElementById('confirm-button');
-
-            confirmButton.addEventListener('click', checkInput);
+            
+            window.addEventListener('keyup', checkInput);
         }
 
-        function checkInput(){
+        function checkInput(event){
+            if(event.key !== 'Enter'){
+                return;
+            }
+
             let firstDigitInput = document.getElementById('first-digit');
             let secondDigitInput = document.getElementById('second-digit');
 
             let firstDigit = parseInt(firstDigitInput.value);
             let secondDigit = parseInt(secondDigitInput.value);
+
             if(!isDigit(firstDigit) || !isDigit(secondDigit)){
+                document.getElementById('error-msg').classList.remove('hide');
+                setTimeout(()=>{document.getElementById("error-msg").classList.add('hide')}, 1000);
                 return;
             }
+            window.removeEventListener('keyup', checkInput);
+
             tests[rounds].isCorrect = (firstDigit === tests[rounds].firstDigit && secondDigit === tests[rounds].secondDigit);
             
-            symbolDuration = checkAnswer(tests[rounds].isCorrect, tests[rounds].isQuick, symbolDuration);
-
-            document.getElementById('confirm-button').removeEventListener('click', checkInput);
-
             inputContainer.classList.add('hide');
-
             roundCounter.textContent = roundCounter.textContent - 1;
-
+            
+            symbolDuration = checkAnswer(tests[rounds].isCorrect, tests[rounds].isQuick, symbolDuration);
             rounds++;
             setTimeout(run, 1500);
         }
@@ -328,12 +343,29 @@ function checkAnswer(isCorrect, isQuick, symbolDuration){
     resetSquares();
     if(isCorrect){
         if(isQuick){
-            return symbolDuration - 10 >= 50 ? symbolDuration - 10 : 50;    
+            if(symbolDuration > 300){
+                return symbolDuration - 40;
+            } else if(symbolDuration > 200) {
+                return symbolDuration - 25;
+            } else if(symbolDuration > 120){
+                return symbolDuration - 15;
+            } else {
+                return symbolDuration - 10 >= 45 ? symbolDuration - 10 : 45;    
+            }
         } else {
-            return symbolDuration - 25 >= 50 ? symbolDuration - 10 : 50;
+            if(symbolDuration > 200){
+                return symbolDuration - 40;
+            } else if(symbolDuration > 140){
+                return symbolDuration - 25;
+            }
+            return symbolDuration - 15 >= 45 ? symbolDuration - 15 : 45;
         }
     } else {
-        return symbolDuration + 20;
+        if(symbolDuration > 200){
+            return symbolDuration + 25;
+        } else {
+            return symbolDuration + 20;
+        }
     }
     
 }

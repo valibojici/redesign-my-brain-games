@@ -66,13 +66,14 @@
             <div id="input-container" class="grid-container">
                 <div id='first-digit-container'>
                     <label id='first-digit-label' for="first-digit" class='preserve-space digit-label'>First digit: </label>
-                    <input type="text" id='first-digit' maxlength="1">
+                    <input type="text" id='first-digit' maxlength="1" autocomplete="off">
                 </div>
                 <div id='second-digit-container'>
                     <label id='second-digit-label' for="second-digit" class='preserve-space digit-label'>Second digit: </label>
-                    <input type="text" id='second-digit' maxlength="1">
+                    <input type="text" id='second-digit' maxlength="1" autocomplete="off">
                 </div>
-                <button id='confirm-button'>CONFIRM</button>
+                <div id='confirm-text'>Press enter to continue</div>
+                <div id="error-msg" class="hide">Enter 2 digits.</div>
             </div>
         </div>
 
