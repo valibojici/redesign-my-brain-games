@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./mixed-signals.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Roboto+Mono:wght@400&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="https://cdn2.iconfinder.com/data/icons/flaticons-solid/18/eye-1-128.png">
+    <script src="./mixed-signals.js" defer></script>
+    <title>Mixed signals</title>
+</head>
+<body>
+    <div id="start-container" class="flex-container">
+        <div id="title-outer">
+            <h1 id='title'>Mixed signals test</h1>
+        </div>
+
+        <div id="instructions-container" class="flex-container">
+            <p id='instructions' class="preserve-space">You will see a series of symbols in the center of your screen, one at a time. The symbols may be letters or digits. You must memorize the only 2 digits and repeat them at the end. In 'slow' rounds there are 1 or 2 letters between the 2 digits, in 'fast' rounds the second digit is right after the first one. Sometimes the first digit will be a different color. For every 3 wrong answers the symbols will change slower and for every 4 correct answers the symbols will change faster. Use the sliders to change the default values.</p>
+            <button id='start-btn' class="button">START</button>
+
+            <div class="input-container flex-container">
+                <input type="range" id="initial-duration" min="200" max="3000" step="50" value="2000" oninput = "updateText('initial-duration-value', this.value);">
+                <label for="initial-duration">Initial reaction window: <span id='initial-duration-value'></span>ms</label>
+            </div>
+            
+            <div class="input-container flex-container">
+                <input type="range" id="initial-count" min="0" max="100" step="5" value="15" oninput = "updateText('initial-count-value', this.value);">    
+                <label for="initial-count">Total rounds: <span id='initial-count-value'></span></label>
+            </div>
+        </div>
+    </div>
+
+    <div id="game-container" class="hide">
+        <div id="rounds"> 50 </div>
+
+        <div id="countdown"> 3 </div>
+        
+        <div id="game-info-container">
+            <span id="correct-squares" class="flex-container">
+                <span class="square green-square"></span>
+                <span class="square green-square"></span>
+                <span class="square green-square"></span>
+            </span>
+            <span id="symbol-duration" class="flex-container preserve-space">Symbol duration: <span id='milliseconds'>500</span></span>
+            <span id="incorrect-squares" class="flex-container">
+                <span class="square red-square"></span>
+                <span class="square red-square"></span>
+            </span>
+        </div>
+
+        <div id="game-inner-container" class="flex-container">
+            <audio id="sound" src=""></audio>
+            <div id="symbols"> 555555555 </div>
+            <div id="spacebar-container">
+                <div id="spacebar" class="flex-container">
+                    <span>space</span>
+                </div>
+                <div id='spacebar-desc'>Number you hear same as number of items</div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="results-container" class="hide flex-container">
+        <div id='results' class="flex-container">
+            
+            <div>Correct answers: <span id="correct-answers">5</span></div>
+            <div>Incorrect answers: <span id="incorrect-answers">22</span></div>
+            <div>Accuracy: <span id="accuracy">33</span>%</div>
+            <div>Average reaction time (correct): <span id="avg-correct-time"></span>500ms</div>
+            <div>Average reaction time (incorrect): <span id="avg-incorrect-time"></span>1000ms</div>
+            <button id='try-again-btn' class="button">TRY AGAIN</button>
+        </div>
+    </div>
+
+</body>
+</html>
