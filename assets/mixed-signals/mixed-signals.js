@@ -11,10 +11,6 @@ const resultsContainer = document.getElementById('results-container');
 const startBtn = document.getElementById('start-btn');
 const tryAgainBtn = document.getElementById('try-again-btn');
 
-startContainer.classList.add('hide');
-// gameContainer.classList.remove('hide');
-resultsContainer.classList.remove('hide');
-document.getElementById('countdown').classList.add('hide');
  
 startBtn.addEventListener('click', setup);
 tryAgainBtn.addEventListener('click', e=>{
@@ -24,20 +20,19 @@ tryAgainBtn.addEventListener('click', e=>{
 
 function setup(event)
 {
-    FAST_ROUNDS = parseInt(document.getElementById("initial-fast-count").value);
-    SLOW_ROUNDS = parseInt(document.getElementById("initial-slow-count").value);
-    TOTAL_ROUNDS = FAST_ROUNDS + SLOW_ROUNDS;
-    INITIAL_FAST_DURATION = parseInt(document.getElementById('initial-fast-duration').value);
-    INITIAL_SLOW_DURATION = parseInt(document.getElementById('initial-slow-duration').value);
-    
+    TOTAL_ROUNDS = parseInt(document.getElementById("initial-count").value);
+    INITIAL_DURATION = parseInt(document.getElementById('initial-duration').value);
+    console.log(TOTAL_ROUNDS, INITIAL_DURATION);
+
     let rounds = 0;
-    let symbolDuration = SLOW_ROUNDS === 0 ? INITIAL_FAST_DURATION : INITIAL_SLOW_DURATION;
-    let changedToFastRuns = SLOW_ROUNDS === 0 ? true : false;
-    let tests = generateTests(SLOW_ROUNDS, FAST_ROUNDS);
+    let reactionTimeWindow = INITIAL_DURATION;
+
+    let tests = generateTests(TOTAL_ROUNDS);
+    let answers = [];
     console.log(tests);
 
-    const symbol = document.getElementById('symbol');
-    const inputContainer = document.getElementById('input-container');
+    const symbols = document.getElementById('symbols');
+    
     const roundCounter = document.getElementById('rounds')
     const milliseconds = document.getElementById('milliseconds')
     const countdown = document.getElementById('countdown');
@@ -47,11 +42,10 @@ function setup(event)
     gameContainer.classList.remove('hide');
     
     countdown.classList.remove('hide');
-    symbol.classList.add('hide');
-    inputContainer.classList.add('hide');
+    symbols.classList.add('hide');
     
-    milliseconds.textContent = `${symbolDuration}ms ${changedToFastRuns ? '(fast)' : '(slow)'}`;
-    roundCounter.textContent = `${TOTAL_ROUNDS}`;
+    milliseconds.textContent = reactionTimeWindow+'ms';
+    roundCounter.textContent = TOTAL_ROUNDS;
 
     resetSquares();
 
@@ -78,72 +72,59 @@ function setup(event)
             return;
         }
 
-        if(!changedToFastRuns && tests[rounds].isQuick){
-            changedToFastRuns = true;
-            symbolDuration = INITIAL_FAST_DURATION;
-            resetSquares();
-        }
-        
-        milliseconds.textContent = `${symbolDuration}ms ${changedToFastRuns ? '(fast)' : '(slow)'}`;
+        roundCounter.textContent = TOTAL_ROUNDS - rounds;
+        milliseconds.textContent = reactionTimeWindow + 'ms';
 
-        symbol.classList.remove('hide');
-        drawSymbols(tests[rounds].symbolList, symbolDuration, symbol, handleInput);
+        let audio = document.getElementById("sound");
+        audio.src = `./audio/${tests[rounds].number}.mp3`;
+        audio.play();
+
+
+        setTimeout(()=>{
+            drawSymbols(handleInput);
+        }, 600)
+
+        let start, end, answerTimeout;
+
+        function drawSymbols(callback){
+            symbols.textContent = tests[rounds].symbols;
+            symbols.classList.remove('hide');
+            callback();
+        }
         
         function handleInput(){
-            symbol.classList.add('hide');
-            inputContainer.classList.remove('hide');
+            start = performance.now();
+            answerTimeout = setTimeout(()=>{
+                checkInput(null, true);
+                window.removeEventListener('keypress', checkInput);
+            }, reactionTimeWindow);
 
-            let firstDigitInput = document.getElementById('first-digit');
-            let secondDigitInput = document.getElementById('second-digit');
-
-            [firstDigitInput, secondDigitInput].forEach(btn=>
-                btn.addEventListener('focus', e=>{
-                    e.target.value = '';
-                    e.target.textContent = '';
-            }));
-
-            firstDigitInput.focus();
-            
-            firstDigitInput.addEventListener('input',e=>{
-                if(secondDigitInput.value == ''){
-                    secondDigitInput.focus();
-                }
-            });
-
-            secondDigitInput.addEventListener('input',e=>{
-                secondDigitInput.blur();
-            })
-
-            firstDigitInput.value = '';
-            secondDigitInput.value = '';
-            
-            window.addEventListener('keyup', checkInput);
+            window.addEventListener('keypress', checkInput);
         }
 
-        function checkInput(event){
-            if(event.key !== 'Enter'){
+        function checkInput(event, timeIsUp = false){
+            if(timeIsUp){
+                answers.push({
+                    isCorrect : false,
+                    timeIsUp : true
+                });
+                rounds++;
+                setTimeout(run, 1500);
+
+                symbols.classList.add('hide');
                 return;
             }
 
-            let firstDigitInput = document.getElementById('first-digit');
-            let secondDigitInput = document.getElementById('second-digit');
-
-            let firstDigit = parseInt(firstDigitInput.value);
-            let secondDigit = parseInt(secondDigitInput.value);
-
-            if(!isDigit(firstDigit) || !isDigit(secondDigit)){
-                document.getElementById('error-msg').classList.remove('hide');
-                setTimeout(()=>{document.getElementById("error-msg").classList.add('hide')}, 1000);
+            console.log(event.key);
+            if(event.key !== ' '){
                 return;
             }
-            window.removeEventListener('keyup', checkInput);
 
-            tests[rounds].isCorrect = (firstDigit === tests[rounds].firstDigit && secondDigit === tests[rounds].secondDigit);
+            audio.src = "";
+            symbols.classList.add('hide');
+            clearTimeout(answerTimeout);
             
-            inputContainer.classList.add('hide');
-            roundCounter.textContent = roundCounter.textContent - 1;
-            
-            symbolDuration = checkAnswer(tests[rounds].isCorrect, tests[rounds].isQuick, symbolDuration);
+            window.removeEventListener('keypress', checkInput);
             rounds++;
             setTimeout(run, 1500);
         }
@@ -203,67 +184,46 @@ function updateText(id, val){
     document.getElementById(id).textContent = val;
 }
 
-function generateSymbols(isQuick){
-    symbols = [];
-    let length = random_int(15, 20);
-    let spaceChance = 3;
+function randomSymbol(){
+    randomSymbol.chars = randomSymbol.chars || "ABCDEFGH$%@#WOZXKYT";
 
-    for(let i=0; i<length; ++i){
-        let letterCode = random_int(65, 65 + 26 - 1);
-        let letter = String.fromCharCode(letterCode);
-        if(i > 4 && i < length - 4 && random_int(1, spaceChance) == 1){
-            symbols.push(' ');
-            spaceChance++;
-            if(random_int(0, 1) == 0){
-                symbols.push(' ');
-                symbols.push(' ');
-            }
-        }
-        while(symbols[symbols.length - 1] === letter || letter === 'O'){
-            letterCode = random_int(65, 65 + 26 - 1);
-            letter = String.fromCharCode(letterCode);
-        }
-        symbols.push(letter);
-    }
-
-    let digit1Index = random_int(3, symbols.length - 6);
-    let digit2Index = random_int(digit1Index+2,digit1Index + 3);
-
-    if(isQuick){
-        digit2Index = digit1Index + 1;
-    }
-
-    symbols[digit1Index] = random_int(1, 9);
-    symbols[digit2Index] = random_int(1, 9);
-    while(symbols[digit2Index] === symbols[digit1Index]){
-        symbols[digit2Index] = random_int(1, 9);
-    }
-    return symbols;
+    return randomSymbol.chars.charAt(random_int(0, randomSymbol.chars.length-1));
 }
 
-function generateTests(slow, fast){
+function generateTests(rounds){
     let temp = [];
-    for(let i=0; i < slow + fast; ++i){
+    for(let i=0; i < rounds; ++i){
 
-        let symbols = generateSymbols((i >= slow));
-        let firstDigit = -1, secondDigit = -1;
+        let audioNum = random_int(1, 7);
+        let symbol = randomSymbol();
 
-        for(let symbol of symbols){
-            if(isDigit(symbol)){
-                if(firstDigit === -1){
-                    firstDigit = symbol;
-                } else {
-                    secondDigit = symbol;
-                    break;
-                }
+        // 50% chance that symbol is a digit (different from audio)
+        if(random_int(0, 1) === 0){
+            symbol = random_int(1, 9);
+            while(symbol === audioNum){
+                symbol = random_int(1, 9)
             }
+            // 50% chance that symbol is actually audio
+            if(random_int(0, 1) === 0){
+                symbol = audioNum;
+            }
+        }
+
+        // the audio corresponds with number of symbols
+        let symbols = `${symbol}`.repeat(audioNum);
+
+        // 50% chance number of symbols is different
+        if(random_int(0, 1) === 0){
+            let tempNum = audioNum;
+            while(tempNum === audioNum){
+                tempNum = random_int(1, 7);
+            }
+            symbols = `${symbol}`.repeat(tempNum);
         }
 
         temp.push({
-            symbolList : symbols,
-            isQuick : (i >= slow),
-            firstDigit : firstDigit,
-            secondDigit : secondDigit
+            symbols : symbols,
+            number : audioNum
         });
     }
     return temp;
@@ -321,7 +281,7 @@ function resetSquares(){
     }
 }
 
-function checkAnswer(isCorrect, isQuick, symbolDuration){
+function checkAnswer(isCorrect, isQuick, reactionTimeWindow){
     let squares = document.getElementsByClassName(`${isCorrect ? 'green' : 'red'}-square`);
     let ok = false;
     console.log(squares);
@@ -335,35 +295,35 @@ function checkAnswer(isCorrect, isQuick, symbolDuration){
 
     if(ok){
         // just modify square and return without modifying time
-        return symbolDuration;
+        return reactionTimeWindow;
     }
 
     // else must update time and reset squares
     resetSquares();
     if(isCorrect){
         if(isQuick){
-            if(symbolDuration > 300){
-                return symbolDuration - 40;
-            } else if(symbolDuration > 200) {
-                return symbolDuration - 25;
-            } else if(symbolDuration > 120){
-                return symbolDuration - 15;
+            if(reactionTimeWindow > 300){
+                return reactionTimeWindow - 40;
+            } else if(reactionTimeWindow > 200) {
+                return reactionTimeWindow - 25;
+            } else if(reactionTimeWindow > 120){
+                return reactionTimeWindow - 15;
             } else {
-                return symbolDuration - 10 >= 45 ? symbolDuration - 10 : 45;    
+                return reactionTimeWindow - 10 >= 45 ? reactionTimeWindow - 10 : 45;    
             }
         } else {
-            if(symbolDuration > 200){
-                return symbolDuration - 40;
-            } else if(symbolDuration > 140){
-                return symbolDuration - 25;
+            if(reactionTimeWindow > 200){
+                return reactionTimeWindow - 40;
+            } else if(reactionTimeWindow > 140){
+                return reactionTimeWindow - 25;
             }
-            return symbolDuration - 15 >= 45 ? symbolDuration - 15 : 45;
+            return reactionTimeWindow - 15 >= 45 ? reactionTimeWindow - 15 : 45;
         }
     } else {
-        if(symbolDuration > 200){
-            return symbolDuration + 25;
+        if(reactionTimeWindow > 200){
+            return reactionTimeWindow + 25;
         } else {
-            return symbolDuration + 20;
+            return reactionTimeWindow + 20;
         }
     }
     
