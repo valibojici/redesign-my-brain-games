@@ -22,7 +22,6 @@ function setup(event)
 {
     TOTAL_ROUNDS = parseInt(document.getElementById("initial-count").value);
     INITIAL_DURATION = parseInt(document.getElementById('initial-duration').value);
-    console.log(TOTAL_ROUNDS, INITIAL_DURATION);
 
     let rounds = 0;
     let reactionTimeWindow = INITIAL_DURATION;
@@ -75,16 +74,14 @@ function setup(event)
         roundCounter.textContent = TOTAL_ROUNDS - rounds;
         milliseconds.textContent = reactionTimeWindow + 'ms';
 
-        let audio = document.getElementById("sound");
-        audio.src = `./audio/${tests[rounds].number}.mp3`;
-        audio.play();
 
+        playAudio(tests[rounds].number);
 
         setTimeout(()=>{
             drawSymbols(handleInput);
-        }, 600)
+        }, 475);
 
-        let start, end, answerTimeout;
+        let start, answerTimeout;
 
         function drawSymbols(callback){
             symbols.textContent = tests[rounds].symbols;
@@ -94,6 +91,7 @@ function setup(event)
         
         function handleInput(){
             start = performance.now();
+
             answerTimeout = setTimeout(()=>{
                 checkInput(null, true);
                 window.removeEventListener('keypress', checkInput);
@@ -104,29 +102,42 @@ function setup(event)
 
         function checkInput(event, timeIsUp = false){
             if(timeIsUp){
+                let isCorrect = tests[rounds].number !== tests[rounds].symbols.length;
+
                 answers.push({
-                    isCorrect : false,
-                    timeIsUp : true
+                    isCorrect : isCorrect
                 });
-                rounds++;
-                setTimeout(run, 1500);
 
+                stopAudio();
                 symbols.classList.add('hide');
-                return;
+                reactionTimeWindow = checkAnswer(isCorrect, reactionTimeWindow);
+
+                window.removeEventListener('keypress', checkInput);
+                rounds++;
+                setTimeout(run, 900);
+
+            } else if(event.key === ' '){
+                
+                stopAudio();
+                symbols.classList.add('hide');
+                clearTimeout(answerTimeout);
+    
+                let isCorrect = tests[rounds].number === tests[rounds].symbols.length;
+
+                flashSpacebar(isCorrect ? 'green' : 'red');
+
+                answers.push({
+                    isCorrect : isCorrect,
+                    reactionTime : performance.now() - start
+                })
+    
+                reactionTimeWindow = checkAnswer(isCorrect, reactionTimeWindow);
+                
+                window.removeEventListener('keypress', checkInput);
+                rounds++;
+                setTimeout(run, 900);      
             }
 
-            console.log(event.key);
-            if(event.key !== ' '){
-                return;
-            }
-
-            audio.src = "";
-            symbols.classList.add('hide');
-            clearTimeout(answerTimeout);
-            
-            window.removeEventListener('keypress', checkInput);
-            rounds++;
-            setTimeout(run, 1500);
         }
     }
 
@@ -134,30 +145,30 @@ function setup(event)
         gameContainer.classList.add('hide');
         resultsContainer.classList.remove('hide');
 
-        let correctSlowAnswers = 0, incorrectSlowAnswers = 0, correctFastAnswers = 0, incorrectFastAnswers = 0;
-        tests.forEach(test =>{
-            if(test.isQuick){
-                if(test.isCorrect){
-                    correctFastAnswers++;
-                } else {
-                    incorrectFastAnswers++;
+        let correctAnswers = 0, incorrectAnswers = 0, correctTotalTime = 0, incorrectTotalTime = 0, correctTotalTimeCount = 0, incorrectTotalTimeCount = 0;
+        answers.forEach(answer =>{
+            if(answer.isCorrect){
+                correctAnswers++;
+                if(answer.reactionTime){
+                    correctTotalTime += answer.reactionTime;
+                    correctTotalTimeCount++;
                 }
             } else {
-                if(test.isCorrect){
-                    correctSlowAnswers++;
-                } else {
-                    incorrectSlowAnswers++;
+                incorrectAnswers++;
+                if(answer.reactionTime){
+                    incorrectTotalTime += answer.reactionTime;
+                    incorrectTotalTimeCount++;
                 }
             }
-        });
+        })
+        
+        document.getElementById("correct-answers").textContent = correctAnswers;
+        document.getElementById("incorrect-answers").textContent = incorrectAnswers;
+        document.getElementById("accuracy").textContent = (correctAnswers + incorrectAnswers) === 0 ? 0 : Math.round(100 * correctAnswers / (correctAnswers + incorrectAnswers));
 
-        document.getElementById("correct-slow-answers").textContent = correctSlowAnswers;
-        document.getElementById("incorrect-slow-answers").textContent = incorrectSlowAnswers;
-        document.getElementById("correct-fast-answers").textContent = correctFastAnswers;
-        document.getElementById("incorrect-fast-answers").textContent = incorrectFastAnswers;
-        document.getElementById("slow-accuracy").textContent = Math.round(100 * correctSlowAnswers / (correctSlowAnswers + incorrectSlowAnswers));
-        document.getElementById("fast-accuracy").textContent = Math.round(100* correctFastAnswers / (correctFastAnswers + incorrectFastAnswers));
-        document.getElementById("overall-accuracy").textContent = Math.round(100 * (correctSlowAnswers + correctFastAnswers) / (correctSlowAnswers + incorrectSlowAnswers + correctFastAnswers + incorrectFastAnswers));
+        document.getElementById("avg-correct-time").textContent = Math.round(correctTotalTimeCount === 0 ? 0 : correctTotalTime / correctTotalTimeCount);
+        document.getElementById("avg-incorrect-time").textContent = Math.round(incorrectTotalTimeCount === 0 ? 0 : incorrectTotalTime / incorrectTotalTimeCount);
+
         return;
     }
 }
@@ -195,6 +206,11 @@ function generateTests(rounds){
     for(let i=0; i < rounds; ++i){
 
         let audioNum = random_int(1, 7);
+
+        if(i > 0){
+            while(audioNum === temp[i-1].number) audioNum = random_int(1, 7);
+        }
+
         let symbol = randomSymbol();
 
         // 50% chance that symbol is a digit (different from audio)
@@ -229,46 +245,6 @@ function generateTests(rounds){
     return temp;
 }
 
-// function shuffle(sourceArray) {
-//     // https://stackoverflow.com/a/3718452
-//     for (var i = 0; i < sourceArray.length - 1; i++) {
-//         var j = i + Math.floor(Math.random() * (sourceArray.length - i));
-
-//         var temp = sourceArray[j];
-//         sourceArray[j] = sourceArray[i];
-//         sourceArray[i] = temp;
-//     }
-//     return sourceArray;
-// }
-
-function drawSymbols(symbolList, duration, symbolContainer, callback){
-    let index = 0;
-    let firstDigitPassed = false;
-        
-    loopAsync();
-    function loopAsync(){
-        if(index === symbolList.length){
-            setTimeout(()=>{
-                symbolContainer.classList.add('hide');
-                setTimeout(callback, 650);
-
-            }, duration);
-            return;
-        }
-        symbolContainer.textContent = symbolList[index];
-        symbolContainer.style.color = 'black';
-
-        if(symbolList[index] >= 0 && symbolList[index] <= 9){
-            if(!firstDigitPassed && random_int(0, 2) === 0){
-                symbolContainer.style.color = 'red';
-            }
-            firstDigitPassed = true;
-        }
-        index++;
-        setTimeout(loopAsync, duration);
-    }
-}
-
 function resetSquares(){
     let correctSquares = document.getElementById('correct-squares').children;
     let incorrectSquares = document.getElementById('incorrect-squares').children;
@@ -281,10 +257,9 @@ function resetSquares(){
     }
 }
 
-function checkAnswer(isCorrect, isQuick, reactionTimeWindow){
+function checkAnswer(isCorrect, reactionTimeWindow){
     let squares = document.getElementsByClassName(`${isCorrect ? 'green' : 'red'}-square`);
     let ok = false;
-    console.log(squares);
     for(let square of squares){
         if(!square.classList.contains('active-square')){
             square.classList.add('active-square');
@@ -301,30 +276,43 @@ function checkAnswer(isCorrect, isQuick, reactionTimeWindow){
     // else must update time and reset squares
     resetSquares();
     if(isCorrect){
-        if(isQuick){
-            if(reactionTimeWindow > 300){
-                return reactionTimeWindow - 40;
-            } else if(reactionTimeWindow > 200) {
-                return reactionTimeWindow - 25;
-            } else if(reactionTimeWindow > 120){
-                return reactionTimeWindow - 15;
-            } else {
-                return reactionTimeWindow - 10 >= 45 ? reactionTimeWindow - 10 : 45;    
-            }
-        } else {
-            if(reactionTimeWindow > 200){
-                return reactionTimeWindow - 40;
-            } else if(reactionTimeWindow > 140){
-                return reactionTimeWindow - 25;
-            }
-            return reactionTimeWindow - 15 >= 45 ? reactionTimeWindow - 15 : 45;
-        }
+        if(reactionTimeWindow > 1000){
+            return reactionTimeWindow - 200;
+        } else return reactionTimeWindow - 100 >= 500 ? reactionTimeWindow - 100 : 500;
     } else {
-        if(reactionTimeWindow > 200){
-            return reactionTimeWindow + 25;
-        } else {
-            return reactionTimeWindow + 20;
-        }
+        if(reactionTimeWindow < 800)
+            return reactionTimeWindow + 200;
+        else 
+            return reactionTimeWindow + 300;
     }
     
+}
+
+function flashSpacebar(color){
+    let spacebar = document.getElementById('spacebar');
+
+    if(color === 'green'){
+        spacebar.classList.add('spacebar-correct');
+        setTimeout(()=>{
+            spacebar.classList.remove('spacebar-correct');
+        }, 200);
+    } else if(color === 'red') {
+        spacebar.classList.add('spacebar-incorrect');
+        setTimeout(()=>{
+            spacebar.classList.remove('spacebar-incorrect');
+        }, 100);
+    }
+}
+
+function playAudio(num){
+    // let source = document.createElement('source');
+    let audio = document.getElementById('sound');
+    audio.src = `./audio/${num}.mp3`;
+    audio.play();
+}
+
+function stopAudio(){
+    let audio = document.getElementById('sound');
+    audio.pause();
+    audio.src = "";
 }

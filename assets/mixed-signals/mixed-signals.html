@@ -18,11 +18,11 @@
         </div>
 
         <div id="instructions-container" class="flex-container">
-            <p id='instructions' class="preserve-space">You will see a series of symbols in the center of your screen, one at a time. The symbols may be letters or digits. You must memorize the only 2 digits and repeat them at the end. In 'slow' rounds there are 1 or 2 letters between the 2 digits, in 'fast' rounds the second digit is right after the first one. Sometimes the first digit will be a different color. For every 3 wrong answers the symbols will change slower and for every 4 correct answers the symbols will change faster. Use the sliders to change the default values.</p>
+            <p id='instructions' class="preserve-space">You will hear a voice saying a number between 1 and 7 and shortly after you will see symbols on the screen. They may be digits, letters or '%', '$', '#', '@'. You must press the <b>spacebar</b> when the <b>number you hear is the same as the number of items on screen</b>. If the number is not the same you must wait. Initial reaction time window (the time you have to press the spacebar if you have to) is 1400ms. Default number of rounds is 15. Change them with the sliders below. </p>
             <button id='start-btn' class="button">START</button>
 
             <div class="input-container flex-container">
-                <input type="range" id="initial-duration" min="200" max="3000" step="50" value="2000" oninput = "updateText('initial-duration-value', this.value);">
+                <input type="range" id="initial-duration" min="500" max="3000" step="50" value="2000" oninput = "updateText('initial-duration-value', this.value);">
                 <label for="initial-duration">Initial reaction window: <span id='initial-duration-value'></span>ms</label>
             </div>
             
@@ -44,7 +44,7 @@
                 <span class="square green-square"></span>
                 <span class="square green-square"></span>
             </span>
-            <span id="symbol-duration" class="flex-container preserve-space">Symbol duration: <span id='milliseconds'>500</span></span>
+            <span id="symbol-duration" class="flex-container preserve-space">Reaction time window: <span id='milliseconds'>500</span></span>
             <span id="incorrect-squares" class="flex-container">
                 <span class="square red-square"></span>
                 <span class="square red-square"></span>
@@ -52,7 +52,7 @@
         </div>
 
         <div id="game-inner-container" class="flex-container">
-            <audio id="sound" src=""></audio>
+            <audio id="sound"></audio>
             <div id="symbols"> 555555555 </div>
             <div id="spacebar-container">
                 <div id="spacebar" class="flex-container">
@@ -70,8 +70,8 @@
             <div>Correct answers: <span id="correct-answers">5</span></div>
             <div>Incorrect answers: <span id="incorrect-answers">22</span></div>
             <div>Accuracy: <span id="accuracy">33</span>%</div>
-            <div>Average reaction time (correct): <span id="avg-correct-time"></span>500ms</div>
-            <div>Average reaction time (incorrect): <span id="avg-incorrect-time"></span>1000ms</div>
+            <div>Average reaction time (correct): <span id="avg-correct-time"></span>ms</div>
+            <div>Average reaction time (incorrect): <span id="avg-incorrect-time"></span>ms</div>
             <button id='try-again-btn' class="button">TRY AGAIN</button>
         </div>
     </div>
