@@ -135,14 +135,16 @@ function setup(event)
                         resetSquares();
                         correctAnswers = incorrectAnswers = 0;
 
-                        if(imgDuration > 200){
+                        if(imgDuration > 300){
                             imgDuration -= 40
                         }
-                        else if(imgDuration >= 80){
+                        else if(imgDuration >= 200){
                             imgDuration -= 30;
                         }
-                        else if(imgDuration >= 60){
-                            imgDuration -= 10;
+                        else if(imgDuration - 25 >= 75){
+                            imgDuration -= 25;
+                        } else {
+                            imgDuration = 75;
                         }
                         milliseconds.textContent = imgDuration;
                     }

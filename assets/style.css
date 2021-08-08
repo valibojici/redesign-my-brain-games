@@ -41,11 +41,7 @@ body{
 
     box-shadow: rgb(0, 0, 0) 5px 5px 20px 7px, rgba(50, 66, 145, 0.5) 5px 5px 15px 10px inset;
 }
-
-.inner-container   *{
-    /* transform: rotateZ(10deg); */
-}
-
+ 
 .inner-container > img{
     max-height: 50%;
     width: 80%;
