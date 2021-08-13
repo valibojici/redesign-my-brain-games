@@ -18,8 +18,11 @@ gameContainer.classList.add('hide');
 resultsContainer.classList.add('hide');
 
 
-
-[startBtn, tryAgainBtn].forEach(btn => btn.addEventListener('click', setup) );
+startBtn.addEventListener('click', setup);
+tryAgainBtn.addEventListener('click', e=>{
+    resultsContainer.classList.add('hide');
+    startContainer.classList.remove('hide');
+});
 
 function setup(event)
 {
@@ -43,14 +46,8 @@ function setup(event)
     itemCounter.textContent = `${itemCount}`;
     item.classList.add('hide');
     gameContainer.classList.remove('hide');
-    
-    if(event.target === startBtn){
-        startContainer.classList.add('hide');          
-    }
-    else if(event.target === tryAgainBtn){
-        resultsContainer.classList.add('hide');
-    }
-        
+    startContainer.classList.add('hide');
+
     countdown.classList.remove('hide');
     resetSquares();
     setTimeout(()=>{
@@ -83,10 +80,6 @@ function setup(event)
             // 0 = tool 1 = writing
             let imgIndex = random_int(1, 25);
             let dir = random_int(0, 1) === 0 ? 'tools' : 'writing';
-            
-            // item.classList.add('hide');
-
-            // to do: function to change img src and callback funtion to remove hide class
 
             item.src = `./imgs/${dir}/${imgIndex}.png`;
             item.type = dir;
@@ -99,12 +92,8 @@ function setup(event)
                 item.addEventListener('load', e =>{
                     item.classList.remove('hide');
                     startTime = performance.now();
-                })
+                });
             }
-            
-
-            
-
             window.addEventListener('keydown', handleChoice);
         }, imgDuration);
 
@@ -141,10 +130,10 @@ function setup(event)
                         else if(imgDuration >= 200){
                             imgDuration -= 30;
                         }
-                        else if(imgDuration - 25 >= 75){
+                        else if(imgDuration - 25 >= 100){
                             imgDuration -= 25;
                         } else {
-                            imgDuration = 75;
+                            imgDuration = 100;
                         }
                         milliseconds.textContent = imgDuration;
                     }
