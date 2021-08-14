@@ -1,10 +1,8 @@
-var ITEM_NO = 50;
-var IMG_INITIAL_DURATION = document.getElementById('initial-duration').value;
+var ITEM_NO = parseInt(document.getElementById('initial-count').value);
+var IMG_INITIAL_DURATION = parseInt(document.getElementById('initial-duration').value);
 
-document.getElementById('initial-duration-value').textContent = document.getElementById('initial-duration').value;
-document.getElementById('initial-count-value').textContent = document.getElementById('initial-count').value;
-
-
+document.getElementById('initial-duration-value').textContent = IMG_INITIAL_DURATION;
+document.getElementById('initial-count-value').textContent = ITEM_NO;
 
 const startContainer = document.getElementById('start-container');
 const gameContainer = document.getElementById('game-container');
@@ -26,30 +24,30 @@ tryAgainBtn.addEventListener('click', e=>{
 
 function setup(event)
 {
-    console.log('setup');
+    ITEM_NO = parseInt(document.getElementById('initial-count').value);
+    IMG_INITIAL_DURATION = parseInt(document.getElementById('initial-duration').value);
+    
+    let tests = generateTests(ITEM_NO);
 
-    let itemCount = ITEM_NO;
+    let itemCount = 0;
     let imgDuration = IMG_INITIAL_DURATION;
-    let correctAnswers = 0;
-    let incorrectAnswers = 0;
-    let answers = [];
 
     const item = document.getElementById('game-item');
+
     const itemCounter = document.getElementById('item-no');
-    const countdown = document.getElementById('countdown');
     const milliseconds = document.getElementById('milliseconds')
-    const correctSquares = document.getElementById('correct-squares').children;
-    const incorrectSquares = document.getElementById('incorrect-squares').children;
-    
+    const countdown = document.getElementById('countdown');
 
     milliseconds.textContent = imgDuration;
-    itemCounter.textContent = `${itemCount}`;
+    itemCounter.textContent = ITEM_NO;
+
     item.classList.add('hide');
     gameContainer.classList.remove('hide');
     startContainer.classList.add('hide');
-
     countdown.classList.remove('hide');
+
     resetSquares();
+    
     setTimeout(()=>{
         countdown.textContent = '3';
     }, 0);
@@ -68,7 +66,7 @@ function setup(event)
     }, 3000);
 
     function run(){
-        if(itemCount === 0){
+        if(itemCount === ITEM_NO){
             terminate();
             return;
         }
@@ -78,146 +76,154 @@ function setup(event)
 
         setTimeout(()=>{
             // 0 = tool 1 = writing
-            let imgIndex = random_int(1, 25);
-            let dir = random_int(0, 1) === 0 ? 'tools' : 'writing';
-
-            item.src = `./imgs/${dir}/${imgIndex}.png`;
-            item.type = dir;
-
+            item.src = tests[itemCount].src;
 
             if(item.complete){
                 item.classList.remove('hide');
                 startTime = performance.now();
+
+                setTimeout(()=>{
+                    item.classList.add('hide');
+                }, imgDuration);
             } else {
                 item.addEventListener('load', e =>{
                     item.classList.remove('hide');
                     startTime = performance.now();
+
+                    setTimeout(()=>{
+                        item.classList.add('hide');
+                    }, imgDuration);
                 });
             }
             window.addEventListener('keydown', handleChoice);
-        }, imgDuration);
 
-        setTimeout(()=>{
-            item.classList.add('hide');
-        }, imgDuration * 2);
+            
+
+        }, imgDuration);
 
 
         function handleChoice(event){
-            endTime = performance.now();
+            if(event.key === 'ArrowLeft' || event.key === 'ArrowRight'){   
+                tests[itemCount].time = performance.now() - startTime;
 
-            if(event.key === 'ArrowLeft' || event.key === 'ArrowRight'){            
+                window.removeEventListener('keydown', handleChoice);         
                 let arrow = document.getElementById(event.key === 'ArrowLeft' ? 'left-arrow' : 'right-arrow');
-                let isCorrect = true;
-                if(event.key === 'ArrowLeft' && item.type === 'writing' || event.key === 'ArrowRight' && item.type === 'tools'){
-                    isCorrect = false;
+                  
+                tests[itemCount].isCorrect = true;
+                if(event.key === 'ArrowLeft' && tests[itemCount].type === 'writing' || event.key === 'ArrowRight' && tests[itemCount].type === 'tools'){
+                    tests[itemCount].isCorrect = false;
                 }
                 
-                answers.push({
-                    time : endTime - startTime,
-                    isCorrect : isCorrect
-                });
-
-                if(isCorrect){
-                    flashGreen(arrow);
-
-                    if(correctAnswers === 5){
-                        resetSquares();
-                        correctAnswers = incorrectAnswers = 0;
-
-                        if(imgDuration > 300){
-                            imgDuration -= 40
-                        }
-                        else if(imgDuration >= 200){
-                            imgDuration -= 30;
-                        }
-                        else if(imgDuration - 25 >= 100){
-                            imgDuration -= 25;
-                        } else {
-                            imgDuration = 100;
-                        }
-                        milliseconds.textContent = imgDuration;
-                    }
-                    else
-                    {
-                        correctSquares[correctAnswers].classList.add('active-square');
-                        correctAnswers++;
-                    }
-                }else{
-                    flashRed(arrow);
-
-                    if(incorrectAnswers === 2){
-                        resetSquares();
-                        correctAnswers = incorrectAnswers = 0;
-
-                        if(imgDuration <= 80){
-                            imgDuration += 20
-                        }
-                        else if(imgDuration <= 140){
-                            imgDuration += 30
-                        }
-                        else{
-                            imgDuration += 40;
-                        }
-                        milliseconds.textContent = imgDuration;
-                    }
-                    else
-                    {
-                        incorrectSquares[incorrectAnswers].classList.add('active-square');
-                        incorrectAnswers++;
-                    }
-                }
+                imgDuration = checkAnswer(tests[itemCount].isCorrect, imgDuration, arrow);
+                itemCount++;
                 
+                itemCounter.textContent = ITEM_NO - itemCount;
+                milliseconds.textContent = imgDuration;
                 
-                
-                window.removeEventListener('keydown', handleChoice);
-                itemCount--;
-                itemCounter.textContent = `${itemCount}`;
                 setTimeout(run, 1000);
             }
         }
     }
 
     function terminate(){
-        localStorage.imgDuration = imgDuration;
-
         let correct = 0;
         let incorrect = 0;
         let totalTime = 0;
-        let totalGoodTime = 0;
-        let totalBadTime = 0;
+        let totalCorrectTime = 0;
+        let totalIncorrectTime = 0;
 
-        for(let answer of answers){
-            
-            if(answer.isCorrect){ 
-                correct++; 
-                totalGoodTime += answer.time;
+        tests.forEach(test=>{
+            if(test.isCorrect){
+                correct++;
+                totalCorrectTime += test.time;
             }
-            else { 
-                incorrect++; 
-                totalBadTime += answer.time;
+            else {
+                incorrect++;
+                totalIncorrectTime += test.time;
             }
-            totalTime += answer.time;
-        }
+            totalTime += test.time;
+        })
 
         gameContainer.classList.add('hide');
         
         document.getElementById('correct-answers').textContent = correct;
         document.getElementById('incorrect-answers').textContent = incorrect;
-        document.getElementById('accuracy').textContent = `${Math.round(correct / answers.length * 100)}`;
-        document.getElementById('avg-react-time').textContent = `${Math.round(totalTime / answers.length)}`;
-        document.getElementById('correct-react-time').textContent = `${correct !== 0 ? Math.round(totalGoodTime / correct) : 0}`;
-        document.getElementById('incorrect-react-time').textContent = `${incorrect !== 0 ? Math.round(totalBadTime / incorrect) : 0}`;
+        document.getElementById('accuracy').textContent = `${Math.round(correct / (correct + incorrect) * 100)}`;
+        document.getElementById('avg-react-time').textContent = `${Math.round(totalTime / (correct + incorrect) )}`;
+        document.getElementById('correct-react-time').textContent = `${correct !== 0 ? Math.round(totalCorrectTime / correct) : 0}`;
+        document.getElementById('incorrect-react-time').textContent = `${incorrect !== 0 ? Math.round(totalIncorrectTime / incorrect) : 0}`;
 
         resultsContainer.classList.remove('hide');
     }
+}
 
-    function resetSquares(){
-        for(let square of correctSquares){
-            square.classList.remove('active-square');
+function generateTests(item_no){
+    let tests = [];
+    for(let i=0; i<item_no; ++i){
+
+        let imgIndex = random_int(1, 25);
+        while(tests.length > 0 && tests[tests.length-1].imgIndex === imgIndex){
+            imgIndex = random_int(1, 25);
+        } 
+
+        // 0 = tool 1 = writing
+        let dir = random_int(0, 1) === 0 ? 'tools' : 'writing';
+
+        let test = {
+            src : `./imgs/${dir}/${imgIndex}.png`,
+            type : dir,
+            imgIndex : imgIndex
         }
-        for(let square of incorrectSquares){
-            square.classList.remove('active-square');
+
+        tests.push(test);
+    }
+    return tests;
+}
+
+function checkAnswer(isCorrect, imgDuration, arrow){
+    let squares = document.getElementsByClassName(`${isCorrect ? 'green' : 'red'}-square`);
+    let ok = false;
+
+    if(isCorrect){
+        flashGreen(arrow);
+    } else {
+        flashRed(arrow);
+    }
+
+    for(let square of squares){
+        if(!square.classList.contains('active-square')){
+            square.classList.add('active-square');
+            ok = true;
+            break;
         }
+    }
+
+    if(ok){
+        // just modify square and return without modifying time
+        return imgDuration;
+    }
+
+    // else must update time and reset squares
+    resetSquares();
+
+    if(isCorrect){
+        if(imgDuration > 300){
+            return imgDuration - 40
+        }
+        else if(imgDuration > 200){
+            return imgDuration - 30;
+        }
+        return imgDuration - 20 >= 125 ? imgDuration - 20 : 125;
+    
+    } else { // not correct
+
+        if(imgDuration <= 80){
+            return imgDuration + 20
+        }
+        else if(imgDuration <= 140){
+            return imgDuration + 30
+        }
+        return imgDuration + 40;
     }
 }
 
@@ -235,8 +241,23 @@ function flashGreen(arrow){
     }, 120);
 }
 
+
+
+function resetSquares(){
+    let correctSquares = document.getElementById('correct-squares').children;
+    let incorrectSquares = document.getElementById('incorrect-squares').children;
+    
+    for(let square of correctSquares){
+        square.classList.remove('active-square');
+    }
+    for(let square of incorrectSquares){
+        square.classList.remove('active-square');
+    }
+}
+
 function random_int(min, max){
-    return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
+    //The maximum is inclusive and the minimum is inclusive
+    return Math.floor(Math.random() * (max - min + 1) + min); 
 }
 
 function updateDurationText(val){
