@@ -97,8 +97,11 @@ function setup(event)
             let firstDigitInput = document.getElementById('first-digit');
             let secondDigitInput = document.getElementById('second-digit');
 
-            [firstDigitInput, secondDigitInput].forEach(btn=>
-                btn.addEventListener('focus', e=>{
+            firstDigitInput.value = '';
+            secondDigitInput.value = '';
+
+            [firstDigitInput, secondDigitInput].forEach(input=>
+                input.addEventListener('focus', e=>{
                     e.target.value = '';
                     e.target.textContent = '';
             }));
@@ -108,16 +111,15 @@ function setup(event)
             firstDigitInput.addEventListener('input',e=>{
                 if(secondDigitInput.value == ''){
                     secondDigitInput.focus();
+                } else {
+                    firstDigitInput.blur();    
                 }
             });
 
             secondDigitInput.addEventListener('input',e=>{
                 secondDigitInput.blur();
-            })
+            });
 
-            firstDigitInput.value = '';
-            secondDigitInput.value = '';
-            
             window.addEventListener('keyup', checkInput);
         }
 
