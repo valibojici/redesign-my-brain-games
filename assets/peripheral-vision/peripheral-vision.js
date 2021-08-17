@@ -1,4 +1,3 @@
-
 let startButton = document.getElementById('start-button');
 let startContainer = document.getElementById('start-container');
 let resultsContainer = document.getElementById('results-container');
@@ -15,7 +14,10 @@ let incorrect_answers_span = document.getElementById('incorrect');
 let accuracy_span = document.getElementById('accuracy');
 let best_time_span = document.getElementById('best-react');
 
-mainContainer.style.display = 'none';
+// mainContainer.style.display = 'none';
+
+startContainer.classList.add("hide");
+resultsContainer.classList.remove("hide");
 
 let timer = 0;
 let timer_interval = null;
@@ -406,4 +408,15 @@ function remove_children(element)
 function isOverflowing(element)
 {
     return element.clientWidth < element.scrollWidth || element.clientHeight < element.scrollHeight;
+}
+
+function changeTextContent(id, content){
+    document.getElementById(id).textContent = content;
+}
+
+function calculateTime(seconds){
+    seconds = parseInt(seconds);
+    let minutes = Math.floor(seconds / 60);
+    seconds = Math.floor(seconds % 60);
+    return `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 }

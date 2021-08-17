@@ -2,83 +2,80 @@
     border: 0;
     margin: 0;
     box-sizing: border-box;
-
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Lato', sans-serif;
 }
 
-
- 
-#background{
-   height: 100vh;
-   width: 100vw;
-   overflow: hidden;
-   position: absolute;
-   z-index: -100;
+body{
+    background: url('./imgs/background.png') no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
 
-#background > img{
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-}
+/* Instructions styles */
 
 #start-container, #results-container{
-    width: 60vw;
+    width: 66%;
     position: absolute;
     
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+
     padding: 25px;
-    display: flex;
+
     flex-direction: column;
-    justify-content: flex-start;
     align-items: center;
-    /* border-bottom: 3px black solid; */
-    /* border-right: 5px black solid; */
-    color: white;
     
+    color: white;
     background-color: rgba(26, 23, 23, 0.863);
+
     border-radius: 25px;
 
     line-height: 35px;
-    font-size: 1.3rem;
+    font-size: 1.5rem;
 }
 
-#results-container{
-    display: none;
-}
-
-#start-button, #try-again-button{
-    width: 20%;
-    padding: 10px 10px;
-    margin-top: 20px;
-    background-color: darkgreen;
-    color: white;
-    border-radius: 25px;
-    font-size: 1.2rem;
-    font-weight: bold;
-}
-
-#start-button:hover, #try-again-button:hover{
-    cursor: pointer;
-}
-
-#start-button:active, #try-again-button:active{
-    background-color: rgb(5, 68, 5);
-}
-
-.reset-time{
-    background-color: rgba(255, 11, 11, 0.596);
-    color: white;
-    padding: 5px;
+.button{
     margin-top: 30px;
-    
+
+    width: 20%;
+    padding: 10px;
+ 
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-weight: bold;
+    letter-spacing: 2px;
+ 
+    background-color: green;
 }
 
-.reset-time:hover{
+.button:hover{
     cursor: pointer;
 }
+
+.button:active{
+    background-color: rgb(15, 85, 15);
+}
+
+.input-container{
+    display: block;
+    width: 100%;
+
+    padding: 8px;
+}
+
+.input-container > label{
+    margin-left: 10px;
+}
+
+input {
+    width: 20%;
+}
+
+/* Game styles */ 
 
 #main-container {
     width: 100vw;
@@ -124,7 +121,6 @@
     left: 50%;
     top: 50%;
     z-index: 10;
-    display: flex;
     justify-content: space-evenly;
     align-items: center;
 
@@ -149,19 +145,6 @@
     font-size: 2rem;
 }
 
-.hide{
-    display: none;
-}
-
-.noselect {
-    -webkit-touch-callout: none; /* iOS Safari */
-      -webkit-user-select: none; /* Safari */
-       -khtml-user-select: none; /* Konqueror HTML */
-         -moz-user-select: none; /* Old versions of Firefox */
-          -ms-user-select: none; /* Internet Explorer/Edge */
-              user-select: none; /* Non-prefixed version, currently
-                                    supported by Chrome, Edge, Opera and Firefox */
-}
 
 
 #countdown{
@@ -220,4 +203,36 @@
     #timer-container{
         font-size: 1.3rem;
     }
+}
+
+
+.flex-container{
+    display: flex;
+}
+
+.hide{
+    display: none;
+}
+
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+}
+
+.selectable:hover{
+    cursor: pointer;
+    border: 2px solid white;
+}
+
+.squish{
+
+}
+
+.pre{
+    white-space: pre;
 }
