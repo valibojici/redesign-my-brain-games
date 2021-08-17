@@ -17,7 +17,7 @@ let best_time_span = document.getElementById('best-react');
 // mainContainer.style.display = 'none';
 
 startContainer.classList.add("hide");
-resultsContainer.classList.remove("hide");
+// resultsContainer.classList.remove("hide");
 
 let timer = 0;
 let timer_interval = null;
@@ -29,47 +29,68 @@ let total_incorrect_answers = 0;
 let total_corect_answers = 0;
 let best_reaction_time = 100000;
 
-startButton.addEventListener('click', e=>{
-    setup_and_start(); 
-});
-
-tryagainButton.addEventListener('click', e=>{
+startButton.addEventListener('click', e => {
     setup_and_start();
 });
 
-for(let button of resetButtons){
-    button.addEventListener('click', e=>{
-        window.localStorage.removeItem('reaction_time');
-        e.target.textContent = 'Reaction time set to 500ms';
-        let background = e.target.style.background;
+tryagainButton.addEventListener('click', e => {
+    resultsContainer.classList.add('hide');
+    startContainer.classList.remove('hide');
+});
 
-        e.target.style.background = 'transparent';
-        setTimeout(()=>{
-            e.target.textContent = 'Reset default reaction time';
-            e.target.style.background = background;
-        }, 1500);
-    });
+
+function drawStageOne() {
+    let radiusOffset = [1, 0.75, 0.5];
+    let startOffset = [7.5, 0, 22.5];
+    let increment = [15, 22.5, 45];
+    let radius = parseFloat(getComputedStyle(document.getElementById("stage-one")).height) / 2;
+    let width = parseFloat(getComputedStyle(document.getElementById("stage-one")).width);
+    
+    for(let k = 0; k<3;++k){
+        for (let i = startOffset[k]; i < 360 + startOffset[k]; i += increment[k]) {
+            let img = document.createElement('img');
+            document.getElementById('stage-one').getElementsByClassName("outer-tiles")[0].appendChild(img);
+            img.classList.add('tile', 'noselect');
+    
+            img.src = './imgs/horse.png';
+    
+            let imgSize = parseFloat(getComputedStyle(img).width);
+     
+            let radiusReduced = radiusOffset[k] * (radius - imgSize / 2);
+    
+            let left = width / 2 + radiusReduced * Math.cos(degrees_to_radians(i));
+            let top = radius + radiusReduced * Math.sin(degrees_to_radians(-i));
+    
+            img.style.left = left - imgSize / 2 + 'px';
+            img.style.top = top - imgSize / 2 + 'px';
+        }
+
+    }
+    
+
+    // function draw(radius_offset, start, increment, isOuter = false) {
+    //     for (let i = start; i < 360 + start; i += increment) {
+    //         let img = document.createElement('img');
+    //         img.src = './imgs/horse.png';
+    //         img.classList.add('tile', 'noselect');
+    //         img.style.transform = `translate(-50%, -50%) scaleX(${1 / parseFloat(circle.style.transform.substr(22))})`;
+    //         let radius_reduced = radius_offset * radius;
+    //         let left = radius + radius_reduced * Math.cos(degrees_to_radians(i)) + 'px';
+    //         let top = radius + radius_reduced * Math.sin(degrees_to_radians(-i)) + 'px';
+
+    //         img.style.left = left;
+    //         img.style.top = top;
+    //         circle.appendChild(img);
+    //     }
+    //     if (isOuter) {
+    //         return change_to_logo();
+    //     }
+    // }
 }
 
-function resizeCircleContainer()
-{
-    circle.style.width = window.getComputedStyle(circle).height;
+drawStageOne();
 
-    let scaleXfactor = 1.8;
-    circle.style.transform = `translate(-50%, -50%) scaleX(${scaleXfactor})`;
-    while(isOverflowing(mainContainer) && scaleXfactor > 1)
-    {
-        circle.style.transform = `translate(-50%, -50%) scaleX(${scaleXfactor})`;
-        scaleXfactor -= 0.05;
-    } 
-}
-
-window.onresize = e=>{
-    resizeCircleContainer();
-};
-
-function setup_and_start()
-{
+function setup_and_start() {
     startContainer.style.display = 'none';
     resultsContainer.style.display = 'none';
     timer = 60;
@@ -82,40 +103,40 @@ function setup_and_start()
     total_corect_answers = 0;
     best_reaction_time = 10000000;
 
-    setTimeout(()=>{
+    setTimeout(() => {
         countdown_container.textContent = '3';
     }, 0);
 
-    setTimeout(()=>{
+    setTimeout(() => {
         countdown_container.textContent = '2';
     }, 1000);
 
-    setTimeout(()=>{
+    setTimeout(() => {
         countdown_container.textContent = '1';
         setTimeout(() => {
             countdown_container.textContent = '';
         }, 1000);
 
-        setTimeout(()=>{
-            timer_interval = setInterval(()=>{
+        setTimeout(() => {
+            timer_interval = setInterval(() => {
                 timer--;
                 timer_container.textContent = `Time left ${display_time(timer)}`;
-        
-                if(timer == 0){
+
+                if (timer == 0) {
                     clearInterval(timer_interval);
                 }
             }, 1000);
 
             run();
         }, 2000)
-    
+
     }, 2000)
 
 }
 
- 
-function run(){
-    if (timer == 0){
+
+function run() {
+    if (timer == 0) {
         terminate();
         return;
     }
@@ -124,17 +145,15 @@ function run(){
     resizeCircleContainer();
     let radius = parseFloat(circle.style.width) / 2;
 
-    let reaction_time = window.localStorage.getItem('reaction_time') != null 
-                            ? parseInt(window.localStorage.reaction_time) : 500;    
+    let reaction_time = window.localStorage.getItem('reaction_time') != null ?
+        parseInt(window.localStorage.reaction_time) : 500;
 
     console.log(reaction_time, incorrect_answers, correct_answers);
 
     let wrong_answer = false; // true if incorrect car or sign is clicked
 
-    function draw_static_tiles()
-    {
-        for(let i = 15 + 7.5, j=0; i < 360 + 15 + 7.5; i += 45, j++)
-        {
+    function draw_static_tiles() {
+        for (let i = 15 + 7.5, j = 0; i < 360 + 15 + 7.5; i += 45, j++) {
             let img = document.createElement('img');
             img.src = './imgs/static.png';
             img.classList.add('tile', 'static', 'noselect');
@@ -149,10 +168,8 @@ function run(){
         }
     }
 
-    function draw_tiles()
-    {
-        function change_to_logo()
-        {
+    function draw_tiles() {
+        function change_to_logo() {
             let childs = circle.children;
             let index = random_int(0, 7) * 3 + 1;
             childs.item(index).src = './imgs/route66logo.png';
@@ -163,10 +180,8 @@ function run(){
             return (index - 1) / 3;
         }
 
-        function draw(radius_offset, start, increment, isOuter = false)
-        {
-            for(let i = start; i < 360 + start; i += increment)
-            {
+        function draw(radius_offset, start, increment, isOuter = false) {
+            for (let i = start; i < 360 + start; i += increment) {
                 let img = document.createElement('img');
                 img.src = './imgs/horse.png';
                 img.classList.add('tile', 'noselect');
@@ -174,13 +189,12 @@ function run(){
                 let radius_reduced = radius_offset * radius;
                 let left = radius + radius_reduced * Math.cos(degrees_to_radians(i)) + 'px';
                 let top = radius + radius_reduced * Math.sin(degrees_to_radians(-i)) + 'px';
-    
+
                 img.style.left = left;
                 img.style.top = top;
                 circle.appendChild(img);
             }
-            if(isOuter)
-            {
+            if (isOuter) {
                 return change_to_logo();
             }
         }
@@ -190,8 +204,7 @@ function run(){
         return route66_index;
     }
 
-    function addCar(index)
-    {
+    function addCar(index) {
         let car = document.createElement('img');
         car.src = `./imgs/car${index}.png`;
         car.style.display = 'inline';
@@ -203,9 +216,9 @@ function run(){
 
     // draw all tiles and route66 logo and the car
     let route66_index, car_index;
-    setTimeout(()=>{
+    setTimeout(() => {
         route66_index = draw_tiles();
-        car_index = random_int(1,3);
+        car_index = random_int(1, 3);
         addCar(car_index);
     }, 0)
 
@@ -219,25 +232,21 @@ function run(){
 
 
     // after 2*reaction time milliseconds, draw 2 cars and static tiles to  choose from
-    setTimeout( ()=>{
+    setTimeout(() => {
         remove_children(circle);
         carContainer.style.backgroundImage = 'none';
 
         let fake_car_index = random_int(1, 3);
-        while(fake_car_index == car_index)
-        {
+        while (fake_car_index == car_index) {
             fake_car_index = fake_car_index + 1;
-            if(fake_car_index > 3)fake_car_index = 1;
+            if (fake_car_index > 3) fake_car_index = 1;
         }
 
         let real_car, fake_car;
-        if(random_int(0, 1) == 0)
-        {
+        if (random_int(0, 1) == 0) {
             real_car = addCar(car_index);
             fake_car = addCar(fake_car_index);
-        }
-        else
-        {
+        } else {
             fake_car = addCar(fake_car_index);
             real_car = addCar(car_index);
         }
@@ -247,9 +256,8 @@ function run(){
         real_car.addEventListener('click', handle_car_click);
         fake_car.addEventListener('click', handle_car_click);
 
-        function handle_car_click(e)
-        {
-            if(!e.target.isCorrect){
+        function handle_car_click(e) {
+            if (!e.target.isCorrect) {
                 wrong_answer = true;
             }
 
@@ -260,116 +268,96 @@ function run(){
             draw_static_tiles();
 
             let index = 0;
-            for(let tile of circle.children)
-            {
+            for (let tile of circle.children) {
                 tile.isCorrect = (index === route66_index);
                 tile.addEventListener('click', handle_tile_click);
                 index++;
             }
         }
 
-        function handle_tile_click(e)
-        {
-            if(!e.target.isCorrect){
+        function handle_tile_click(e) {
+            if (!e.target.isCorrect) {
                 wrong_answer = true;
             }
 
-            for(let tile of circle.children){     
+            for (let tile of circle.children) {
                 tile.removeEventListener('click', handle_tile_click);
             }
 
             remove_children(circle);
 
-            if(wrong_answer){
+            if (wrong_answer) {
                 incorrect_answers++;
                 total_incorrect_answers++;
-            }
-            else{
+            } else {
                 correct_answers++;
                 total_corect_answers++;
 
-                if(reaction_time < best_reaction_time){
+                if (reaction_time < best_reaction_time) {
                     best_reaction_time = reaction_time;
                 }
             }
 
-            if(incorrect_answers == 2){
-                if(reaction_time >= 800){
+            if (incorrect_answers == 2) {
+                if (reaction_time >= 800) {
                     reaction_time += 20;
-                }
-                else if (reaction_time >= 500){
+                } else if (reaction_time >= 500) {
                     reaction_time += random_int(5, 10);
-                }
-                else if(reaction_time >= 300){
+                } else if (reaction_time >= 300) {
                     reaction_time += random_int(10, 20)
-                }
-                else if(reaction_time >= 250){
+                } else if (reaction_time >= 250) {
                     reaction_time += random_int(15, 25)
-                }
-                else if(reaction_time >= 200){
+                } else if (reaction_time >= 200) {
                     reaction_time += random_int(30, 60);
-                }
-                else if(reaction_time >= 150){
+                } else if (reaction_time >= 150) {
                     reaction_time += random_int(40, 80);
-                }
-                else if(reaction_time >= 100){
+                } else if (reaction_time >= 100) {
                     reaction_time += random_int(50, 100);
-                }
-                else if(reaction_time >= 70){
+                } else if (reaction_time >= 70) {
                     reaction_time += random_int(50, 120);
-                }
-                else{
+                } else {
                     reaction_time += random_int(50, 170);
                 }
                 window.localStorage.reaction_time = reaction_time;
                 incorrect_answers = 0;
                 correct_answers = 0;
             }
-            
-            if(correct_answers == 3){
-                if(reaction_time >= 800){
+
+            if (correct_answers == 3) {
+                if (reaction_time >= 800) {
                     reaction_time = 500;
-                }
-                else if(reaction_time >= 500){
+                } else if (reaction_time >= 500) {
                     reaction_time -= random_int(100, 180);
-                }
-                else if(reaction_time >= 400){
+                } else if (reaction_time >= 400) {
                     reaction_time -= random_int(80, 120);
-                }
-                else if(reaction_time >= 300){
+                } else if (reaction_time >= 300) {
                     reaction_time -= random_int(65, 100);
-                }
-                else if(reaction_time >= 250){
+                } else if (reaction_time >= 250) {
                     reaction_time -= random_int(35, 50);
-                }
-                else if(reaction_time >= 200){
+                } else if (reaction_time >= 200) {
                     reaction_time -= random_int(10, 30);
-                }
-                else if(reaction_time >= 140){
+                } else if (reaction_time >= 140) {
                     reaction_time -= random_int(10, 15);
-                }
-                else if(reaction_time >= 70){
+                } else if (reaction_time >= 70) {
                     reaction_time -= 8;
-                }
-                else reaction_time -= 5;
+                } else reaction_time -= 5;
 
                 window.localStorage.reaction_time = reaction_time;
                 correct_answers = 0;
                 incorrect_answers = 0;
             }
 
-            setTimeout(()=>{
+            setTimeout(() => {
                 run();
             }, 1000)
         }
-        
-    }, reaction_time*2); 
 
-    
+    }, reaction_time * 2);
+
+
 }
 
-function terminate()
-{
+function terminate() {
     console.log('Done');
     mainContainer.style.display = 'none';
     resultsContainer.style.display = 'flex';
@@ -381,40 +369,36 @@ function terminate()
     best_time_span.textContent = best_reaction_time + ' ms';
 }
 
-function degrees_to_radians(degrees)
-{
-    return degrees * (Math.PI/180);
+function degrees_to_radians(degrees) {
+    return degrees * (Math.PI / 180);
 }
- 
-function display_time(timer)
-{
+
+function display_time(timer) {
     // returns string in format mm:ss
     let minutes = Math.floor(timer / 60);
     let seconds = timer % 60;
     return `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 }
 
-function random_int(min, max){
+function random_int(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-function remove_children(element)
-{
+function remove_children(element) {
     while (element.firstChild) {
         element.removeChild(element.lastChild);
     }
 }
 
-function isOverflowing(element)
-{
+function isOverflowing(element) {
     return element.clientWidth < element.scrollWidth || element.clientHeight < element.scrollHeight;
 }
 
-function changeTextContent(id, content){
+function changeTextContent(id, content) {
     document.getElementById(id).textContent = content;
 }
 
-function calculateTime(seconds){
+function calculateTime(seconds) {
     seconds = parseInt(seconds);
     let minutes = Math.floor(seconds / 60);
     seconds = Math.floor(seconds % 60);
