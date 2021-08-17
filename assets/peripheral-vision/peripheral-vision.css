@@ -165,10 +165,6 @@ input {
 
 @media only screen and (max-width: 1600px)
 {
-    #circle{ 
-        /*border: 1px solid red;*/
-    }
-
     #car-container > img{
         width: 120px;
     }
@@ -181,11 +177,6 @@ input {
 
 @media only screen and (max-width: 1200px)
 {
-    #circle{
-        
-        /*border: 1px solid orange;*/
-    }
-
     .tile{
         width: 53px;
         height: 53px;
@@ -228,10 +219,10 @@ input {
     cursor: pointer;
     border: 2px solid white;
 }
-
+/* 
 .squish{
 
-}
+} */
 
 .pre{
     white-space: pre;
