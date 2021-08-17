@@ -1,23 +1,13 @@
-let startButton = document.getElementById('start-button');
-let startContainer = document.getElementById('start-container');
-let resultsContainer = document.getElementById('results-container');
-let tryagainButton = document.getElementById('try-again-button');
-let resetButtons = document.getElementsByClassName('reset-time');
-let mainContainer = document.getElementById('main-container');
-let circle = document.getElementById('circle');
-let carContainer = document.getElementById('car-container');
-let timer_container = document.getElementById('timer-container');
-let countdown_container = document.getElementById('countdown');
+setupStages();
 
-let correct_answers_span = document.getElementById('correct');
-let incorrect_answers_span = document.getElementById('incorrect');
-let accuracy_span = document.getElementById('accuracy');
-let best_time_span = document.getElementById('best-react');
+window.addEventListener('resize',e=>{
+    setupStages();
+});
 
-// mainContainer.style.display = 'none';
 
-startContainer.classList.add("hide");
-// resultsContainer.classList.remove("hide");
+changeTextContent("seconds-value", calculateTime(document.getElementById('seconds-input').value));
+changeTextContent("reaction-time-value", document.getElementById('reaction-time-input').value);
+
 
 let timer = 0;
 let timer_interval = null;
@@ -29,73 +19,26 @@ let total_incorrect_answers = 0;
 let total_corect_answers = 0;
 let best_reaction_time = 100000;
 
-startButton.addEventListener('click', e => {
-    setup_and_start();
+document.getElementById('start-button').addEventListener('click', e => {
+    setup();
 });
 
-tryagainButton.addEventListener('click', e => {
-    resultsContainer.classList.add('hide');
-    startContainer.classList.remove('hide');
+document.getElementById('try-again-button').addEventListener('click', e => {
+    document.getElementById('results-container').classList.add('hide');
+    document.getElementById('start-container').classList.remove('hide');
 });
 
+function setup() {
+    const startContainer = document.getElementById("start-container");
+    const gameContainer = document.getElementById('game-container');
+    const resultsContainer = document.getElementById('results-container');
 
-function drawStageOne() {
-    let radiusOffset = [1, 0.75, 0.5];
-    let startOffset = [7.5, 0, 22.5];
-    let increment = [15, 22.5, 45];
-    let radius = parseFloat(getComputedStyle(document.getElementById("stage-one")).height) / 2;
-    let width = parseFloat(getComputedStyle(document.getElementById("stage-one")).width);
-    
-    for(let k = 0; k<3;++k){
-        for (let i = startOffset[k]; i < 360 + startOffset[k]; i += increment[k]) {
-            let img = document.createElement('img');
-            document.getElementById('stage-one').getElementsByClassName("outer-tiles")[0].appendChild(img);
-            img.classList.add('tile', 'noselect');
-    
-            img.src = './imgs/horse.png';
-    
-            let imgSize = parseFloat(getComputedStyle(img).width);
-     
-            let radiusReduced = radiusOffset[k] * (radius - imgSize / 2);
-    
-            let left = width / 2 + radiusReduced * Math.cos(degrees_to_radians(i));
-            let top = radius + radiusReduced * Math.sin(degrees_to_radians(-i));
-    
-            img.style.left = left - imgSize / 2 + 'px';
-            img.style.top = top - imgSize / 2 + 'px';
-        }
+    startContainer.classList.add('hide');
+    gameContainer.classList.remove('hide');
 
-    }
-    
-
-    // function draw(radius_offset, start, increment, isOuter = false) {
-    //     for (let i = start; i < 360 + start; i += increment) {
-    //         let img = document.createElement('img');
-    //         img.src = './imgs/horse.png';
-    //         img.classList.add('tile', 'noselect');
-    //         img.style.transform = `translate(-50%, -50%) scaleX(${1 / parseFloat(circle.style.transform.substr(22))})`;
-    //         let radius_reduced = radius_offset * radius;
-    //         let left = radius + radius_reduced * Math.cos(degrees_to_radians(i)) + 'px';
-    //         let top = radius + radius_reduced * Math.sin(degrees_to_radians(-i)) + 'px';
-
-    //         img.style.left = left;
-    //         img.style.top = top;
-    //         circle.appendChild(img);
-    //     }
-    //     if (isOuter) {
-    //         return change_to_logo();
-    //     }
-    // }
-}
-
-drawStageOne();
-
-function setup_and_start() {
-    startContainer.style.display = 'none';
-    resultsContainer.style.display = 'none';
     timer = 60;
-    timer_container.textContent = `Time left ${display_time(timer)}`;
-    timer_container.style.display = 'inline';
+    
+    timer_container.textContent = `Time left ${calculateTime(timer)}`;
 
     correct_answers = 0;
     incorrect_answers = 0;
@@ -369,22 +312,99 @@ function terminate() {
     best_time_span.textContent = best_reaction_time + ' ms';
 }
 
+function setupStages(){
+    function drawStageOne() {
+        // how far every ring of tiles is drawn from the center 1 = maximum length
+        let radiusOffset = [1, 0.75, 0.5];
+        
+        // hard coded to draw tiles this way
+        let startOffset = [7.5, 0, 22.5];
+        let increment = [15, 22.5, 45];
+    
+        // distance from center of screen to the bottom of the document
+        let radius = parseFloat(document.body.scrollHeight) / 2;
+    
+        let containerWidth = parseFloat(document.body.scrollWidth);
+        
+        for(let k = 0; k<3;++k){
+            for (let i = startOffset[k]; i < 360 + startOffset[k]; i += increment[k]) {
+                let img = document.createElement('img');
+                document.getElementById('stage-one').getElementsByClassName("outer-tiles")[0].appendChild(img);
+                img.classList.add('tile', 'noselect');
+        
+                img.src = './imgs/horse.png';
+        
+                let imgSize = parseFloat(getComputedStyle(img).width);
+    
+                // need to place images a little short of radius to make sure the center of
+                // the image is in the correct place (in css the images have transform(-50%, -50%) )
+                let radiusReduced = radiusOffset[k] * (radius - imgSize / 2);
+    
+                let left = containerWidth / 2 + radiusReduced * Math.cos(degrees_to_radians(i));
+                let top = radius + radiusReduced * Math.sin(degrees_to_radians(-i));
+        
+                img.style.left = left - imgSize / 2 + 'px';
+                img.style.top = top - imgSize / 2 + 'px';
+            }
+    
+        }
+    }
+    
+    function drawStageTwoAndThree(){
+        let startOffset = 7.5 + 15;
+        let radiusOffset = 1;
+        let increment = 45;
+    
+        // distance from center of screen to the bottom of the document
+        // let radius = parseFloat(getComputedStyle(document.getElementById("stage-three")).height) / 2;
+        let radius = parseFloat(document.body.scrollHeight) / 2;
+    
+        let containerWidth = parseFloat(document.body.scrollWidth);
+    
+        for (let i = startOffset; i < 360 + startOffset; i += increment) {
+            let img = document.createElement('img');
+            document.getElementById('stage-two').getElementsByClassName("outer-tiles")[0].appendChild(img);
+            
+            img.classList.add('tile', 'noselect', 'static-tile');
+    
+            img.src = './imgs/static.png';
+    
+            let imgSize = parseFloat(getComputedStyle(img).width);
+    
+            // need to place images a little short of radius to make sure the center of
+            // the image is in the correct place (in css the images have transform(-50%, -50%) )
+            let radiusReduced = radiusOffset * (radius - imgSize / 2);
+    
+            let left = containerWidth / 2 + radiusReduced * Math.cos(degrees_to_radians(i));
+            let top = radius + radiusReduced * Math.sin(degrees_to_radians(-i));
+    
+            img.style.left = left - imgSize / 2 + 'px';
+            img.style.top = top - imgSize / 2 + 'px';
+    
+            let imgCopy = img.cloneNode(true);
+            imgCopy.classList.add('selectable');
+            document.getElementById('stage-three').getElementsByClassName("outer-tiles")[0].appendChild(imgCopy);
+        }
+    }
+
+    for(let tileContainer of document.getElementsByClassName('tiles')){
+        removeChildren(tileContainer);
+    }
+    drawStageOne();
+    drawStageTwoAndThree();
+}
+
+
+
 function degrees_to_radians(degrees) {
     return degrees * (Math.PI / 180);
 }
-
-function display_time(timer) {
-    // returns string in format mm:ss
-    let minutes = Math.floor(timer / 60);
-    let seconds = timer % 60;
-    return `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-}
-
+ 
 function random_int(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-function remove_children(element) {
+function removeChildren(element) {
     while (element.firstChild) {
         element.removeChild(element.lastChild);
     }

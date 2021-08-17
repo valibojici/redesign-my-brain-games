@@ -11,12 +11,17 @@ body{
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
+
+    width: 100vw;
+    height: 100vh;
+    max-height: 100%;
 }
 
 /* Instructions styles */
 
 #start-container, #results-container{
     width: 66%;
+    height: 40%;
     position: absolute;
     
     left: 50%;
@@ -27,6 +32,7 @@ body{
 
     flex-direction: column;
     align-items: center;
+    justify-content: space-between;
     
     color: white;
     background-color: rgba(26, 23, 23, 0.863);
@@ -75,7 +81,7 @@ input {
     width: 20%;
 }
 
-/* Game styles */ 
+/******************** Game styles ********************/ 
 
 #game-container {
     /* border: 1px solid red; */
@@ -86,33 +92,30 @@ input {
     
 #stage-one, #stage-two, #stage-three{
     height: 100%;
+    width: 100%;
     position: relative;
     overflow: hidden;
+
+    /* border: 1px solid red; */
 }
  
 .tile{
-    width: 75px;
-    height: 75px;
+    width: 85px;
+    height: 85px;
     position: absolute;
-    border: 1px solid black;
 
     transform: translate(-50%, -50%);
 }
 
-.static{
+.static-tile{
     border-radius: 100%;
 }
 
-.static:hover{
-    box-shadow: 0px 0px 2px 2px white;
-    cursor: pointer;
-}
-
 .car-container{
+    /* border: 1px solid red; */
     width: 20%;
     height: 15%;
     position: absolute;
-    border: 1px solid red;
     transform: translate(-50%, -50%);
     left: 50%;
     top: 50%;
@@ -129,34 +132,37 @@ input {
 .car-container > img{
     width: 40%;
 }
-
-#car-container > img:hover{
-    cursor: pointer;
-}
+ 
 
 #timer-container{
     position: absolute;
+    display: inline;
     left: 20px;
     top: 20px;
     font-weight: lighter;
     font-size: 2rem;
 }
 
-
-
 #countdown{
-    position: absolute;
     left: 50%;
     top: 50%;
+    position: absolute;
+
     transform: translate(-50%, -50%);
 
-    font-size: 350%;
+    font-size: 4rem;
     font-weight: bold;
-    color: white;
+    color: rgb(255, 255, 255);
+
+    cursor: default;
 }
 
 #countdown:hover{
     cursor: default;
+}
+
+.car-static-container{
+    background-image: url('./imgs/static.png');
 }
 
 
@@ -180,15 +186,15 @@ input {
 
 .selectable:hover{
     cursor: pointer;
-    border: 2px solid white;
+    border: 3px dashed white;
 }
 
 .squish{
-    transform: scaleX(2);
+    transform: scaleX(1.9);
 }
 
 .squish *{
-    transform: scaleX(calc(1 / 2));
+    transform: scaleX(calc(1 / 1.9));
 }
 
 .pre{
@@ -199,6 +205,6 @@ input {
     .tile{
         width: 69px;
         height: 69px;
-        /* border: none; */
+        border: none;
     }
 }
