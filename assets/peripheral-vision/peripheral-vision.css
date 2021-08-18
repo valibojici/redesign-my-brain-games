@@ -72,6 +72,8 @@ body{
 
     width: 20%;
     padding: 10px;
+
+    max-width: 300px;
  
     color: white;
     border: none;
@@ -302,17 +304,17 @@ input {
         border: none;
     }
 
-    #instructions-container{
+    /* #instructions-container{
         width: 85%;
-    }
+    } */
 
     #instructions{
-        font-size: 1.2rem;
+        font-size: 1.4rem;
     }
 
 
     .input-container{
-        font-size: 1.2rem;
+        font-size: 1.4rem;
     }
 }
 
@@ -329,7 +331,7 @@ input {
 
     #instructions{
         line-height: 150%;
-        font-size: 1rem;
+        font-size: 1.1rem;
     }
 
     .input-container{
@@ -345,6 +347,7 @@ input {
         font-size: 1rem;
         width: 30%;
         min-width: 100px;
+        max-width: 200px;
         padding: 5px;
         margin-top: 15px;
     }
