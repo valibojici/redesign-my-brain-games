@@ -311,6 +311,18 @@ hr{
 }
 
 
+@media screen and (max-width: 1400px) {
+    #instructions{
+        font-size: 1.3rem;
+    }
+
+    #title{
+        font-size: 4rem;
+        padding: 28px;
+    }
+}
+
+
 @media screen and (max-width: 1100px) {
     /* Start */
     #title{
@@ -351,7 +363,8 @@ hr{
 
     .button{
         font-size: 1rem;
-        width: 50%;
+        width: 200px;
+        padding: 5px;
         margin-top: 15px;
     }
 
