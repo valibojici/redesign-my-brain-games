@@ -293,7 +293,7 @@ input {
         border: none;
     }
     .car-container{
-        width: 26%;
+        width: 20%;
     }
 }
 
@@ -318,7 +318,7 @@ input {
     }
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1100px) {
     /* Start */
     #title{
         font-size: 3rem;
@@ -326,12 +326,12 @@ input {
     }
 
     #instructions-container{
-        width: 85%;
+        width: 80%;
     }
 
     #instructions{
         line-height: 150%;
-        font-size: 1.1rem;
+        font-size: 1.2rem;
     }
 
     .input-container{
@@ -353,8 +353,8 @@ input {
     }
 
     .tile{
-        width: 70px;
-        height: 70px;
+        width: 65px;
+        height: 65px;
         border: none;
     }
 }
