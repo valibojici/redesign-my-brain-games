@@ -17,13 +17,13 @@
             <h1 id='title'>Peripheral vision test</h1>
         </div>
         <div id="instructions-container" class="flex-container">
-            <p id='instructions'>You must focus on the center of the screen where 1 type of car will appear. Using your peripheral vision you must identify and remember the position of the 'Route 66' sign. You will have limited time to do this. After this you must identify which car you saw and the position of the 'Route 66' sign. The test lasts 60 seconds.</p>
+            <p id='instructions'>You must focus on the center of the screen where 1 type of car will appear. Using your peripheral vision you must identify and remember the position of the 'Route 66' sign. You will have limited time to do this. After this you must identify which car you saw and the position of the 'Route 66' sign. The test lasts 60 seconds and you have 500ms to remember the car and the position of the sign. You can modify these values below.</p>
             <button id="start-button" class="button">START</button>
-            <div class="input-container">
+            <div class="input-container flex-container">
                 <input type="range" min='15' max='300' value="60" step="15" id="seconds-input" oninput='changeTextContent("seconds-value", calculateTime(this.value))'>
                 <label for="seconds-input" id="seconds-input-label" class="pre">Duration:   <span id="seconds-value">01:00</span> (min/sec)</label>
             </div>
-            <div class="input-container">
+            <div class="input-container flex-container">
                 <input type="range" min='100' max='1500' value="500" step="25" id="reaction-time-input" oninput='changeTextContent("reaction-time-value", this.value)'>
                 <label for="reaction-time-input" id="reaction-time-input-label" class="pre">Reaction time:  <span id="reaction-time-value">500</span>ms</label>
             </div>
@@ -63,7 +63,7 @@
         <div>Incorrect answers: <span id='incorrect'></span></div>
         <div>Accuracy: <span id='accuracy'></span>%</div>
         <div>Best reaction time: <span id='best-react'></span>ms</div>
-        <button id='try-again-button' class="button">Try again</button>
+        <button id='try-again-button' class="button">TRY AGAIN</button>
     </div>
  
 </body>

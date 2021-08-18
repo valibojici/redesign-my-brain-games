@@ -42,12 +42,11 @@ body{
 }
 
 #instructions-container{
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: normal;
     overflow: hidden;
     position: relative;
     width: 66%;
-    height: auto;
     
     background-color: rgba(26, 23, 23, 0.863);
     color: whitesmoke;
@@ -63,28 +62,9 @@ body{
     line-height: 30px;
 }
 
-@keyframes fromRight {
-    0%{
-        transform: translate(100%, 0%);
-        opacity: 0;
-    }
-    50%{
-        opacity: 0;
-    }
-    100%{
-        transform: translate(0%, 0%);
-        opacity: 1;
-    }
-}
-
-@keyframes appear {
-    from{
-        
-        transform: scale(0);
-    }
-    to{
-        transform: scale(1);
-    }
+#instructions{
+    line-height: 150%;
+    font-size: 1.5rem;
 }
 
 .button{
@@ -114,7 +94,11 @@ body{
     display: block;
     width: 100%;
 
-    padding: 8px;
+    padding: 10px;
+}
+
+.input-container:first-of-type{
+    margin-top: 15px;
 }
 
 .input-container > label{
@@ -124,6 +108,12 @@ body{
 input {
     width: 20%;
 }
+ 
+
+
+/* .input-container > *{
+    margin-left: 10px;
+} */
 
 /******************** Game styles ********************/ 
 
@@ -144,8 +134,8 @@ input {
 }
  
 .tile{
-    width: 85px;
-    height: 85px;
+    width: 95px;
+    height: 95px;
     position: absolute;
 
     transform: translate(-50%, -50%);
@@ -218,7 +208,7 @@ input {
     top: 50%;
     transform: translate(-50%, -50%);
 
-    padding: 25px;
+    padding: 20px;
 
     flex-direction: column;
     align-items: center;
@@ -227,10 +217,15 @@ input {
     color: white;
     background-color: rgba(26, 23, 23, 0.863);
 
-    border-radius: 25px;
+    border-radius: 45px 25px 45px 25px;
 
     line-height: 35px;
     font-size: 1.5rem;
+}
+
+#results-container > div{
+    margin-top: 10px;
+    font-size: 1.8rem;
 }
 
 .flex-container{
@@ -268,19 +263,64 @@ input {
     white-space: pre;
 }
 
-@media screen and (max-width: 1400px){
+@media (max-aspect-ratio: 18/10) {
+    .squish{
+        transform: scaleX(1.7);
+    }
+    
+    .squish *{
+        transform: scaleX(calc(1 / 1.7));
+    }
+  }
+
+  @media (max-aspect-ratio: 16/10) {
+    .squish{
+        transform: scaleX(1.5);
+    }
+    
+    .squish *{
+        transform: scaleX(calc(1 / 1.5));
+    }
+  }
+
+@media screen and (max-width: 1700px){
     .tile{
-        width: 69px;
-        height: 69px;
+        
+        width: 85px;
+        height: 85px;
         border: none;
+    }
+    .car-container{
+        width: 26%;
     }
 }
 
-@media screen and (max-width: 1100px) {
+@media screen and (max-width: 1400px){
+    .tile{
+        width: 75px;
+        height: 75px;
+        border: none;
+    }
+
+    #instructions-container{
+        width: 85%;
+    }
+
+    #instructions{
+        font-size: 1.2rem;
+    }
+
+
+    .input-container{
+        font-size: 1.2rem;
+    }
+}
+
+@media screen and (max-width: 1200px) {
     /* Start */
     #title{
         font-size: 3rem;
-        padding: 20px;
+        padding: 25px;
     }
 
     #instructions-container{
@@ -289,7 +329,7 @@ input {
 
     #instructions{
         line-height: 150%;
-        font-size: 1.1rem;
+        font-size: 1rem;
     }
 
     .input-container{
@@ -298,7 +338,7 @@ input {
     }
 
     #results > div{
-        font-size: 1.3rem;
+        font-size: 1rem;
     }
 
     .button{
@@ -307,5 +347,36 @@ input {
         min-width: 100px;
         padding: 5px;
         margin-top: 15px;
+    }
+
+    .tile{
+        width: 70px;
+        height: 70px;
+        border: none;
+    }
+}
+
+
+@keyframes fromRight {
+    0%{
+        transform: translate(100%, 0%);
+        opacity: 0;
+    }
+    50%{
+        opacity: 0;
+    }
+    100%{
+        transform: translate(0%, 0%);
+        opacity: 1;
+    }
+}
+
+@keyframes appear {
+    from{
+        
+        transform: scale(0);
+    }
+    to{
+        transform: scale(1);
     }
 }

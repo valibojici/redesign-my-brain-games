@@ -19,6 +19,11 @@ document.getElementById('try-again-button').addEventListener('click', e => {
 });
 
 
+// document.getElementById('game-container').classList.remove('hide');
+// document.getElementById('stage-one').classList.remove('hide');
+// document.getElementById('start-container').classList.add('hide');
+
+
 
 function setup() {
     const startContainer = document.getElementById("start-container");
