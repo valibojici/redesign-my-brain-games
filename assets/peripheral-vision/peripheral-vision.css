@@ -2,151 +2,236 @@
     border: 0;
     margin: 0;
     box-sizing: border-box;
-
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Lato', sans-serif;
 }
 
+body{
+    background: url('./imgs/background.png') no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 
- 
-#background{
-   height: 100vh;
-   width: 100vw;
-   overflow: hidden;
-   position: absolute;
-   z-index: -100;
-}
-
-#background > img{
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-}
-
-#start-container, #results-container{
-    width: 60vw;
-    position: absolute;
-    
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    padding: 25px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    /* border-bottom: 3px black solid; */
-    /* border-right: 5px black solid; */
-    color: white;
-    
-    background-color: rgba(26, 23, 23, 0.863);
-    border-radius: 25px;
-
-    line-height: 35px;
-    font-size: 1.3rem;
-}
-
-#results-container{
-    display: none;
-}
-
-#start-button, #try-again-button{
-    width: 20%;
-    padding: 10px 10px;
-    margin-top: 20px;
-    background-color: darkgreen;
-    color: white;
-    border-radius: 25px;
-    font-size: 1.2rem;
-    font-weight: bold;
-}
-
-#start-button:hover, #try-again-button:hover{
-    cursor: pointer;
-}
-
-#start-button:active, #try-again-button:active{
-    background-color: rgb(5, 68, 5);
-}
-
-.reset-time{
-    background-color: rgba(255, 11, 11, 0.596);
-    color: white;
-    padding: 5px;
-    margin-top: 30px;
-    
-}
-
-.reset-time:hover{
-    cursor: pointer;
-}
-
-#main-container {
     width: 100vw;
     height: 100vh;
-    /* border: 1px solid red; */
-    margin: auto;
+    max-height: 100%;
 }
 
-#circle{
-    height: 100%;
-    border-radius: 100%;
-    position: relative;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%) scaleX(1.8);
-    /*border: 1px solid greenyellow; */
+/* Instructions styles */
 
+#start-container{
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    width: 100vw;
+
+    font-weight: bold;
+    
+    
+}
+
+#title{
+    font-size: 4.5rem;
+    padding: 50px;
+    text-shadow: 2.5px 2.5px rgba(255, 255, 255, 0.452);
+    animation: fromRight 600ms ease-in-out;
+}
+
+#title-outer{
     overflow: hidden;
+}
+
+#instructions-container{
+    font-size: 1.2rem;
+    font-weight: normal;
+    overflow: hidden;
+    position: relative;
+    width: 66%;
+    
+    background-color: rgba(26, 23, 23, 0.863);
+    color: whitesmoke;
+
+    padding: 20px;
+    border-radius: 45px 25px 45px 25px;
+    animation: appear 400ms 700ms ease backwards;
+    transform-origin: left center;
+    
+    align-items: center;
+    flex-direction: column;
+
+    line-height: 30px;
+}
+
+#instructions{
+    line-height: 150%;
+    font-size: 1.5rem;
+}
+
+.button{
+    margin-top: 30px;
+
+    width: 20%;
+    padding: 10px;
+
+    max-width: 300px;
+ 
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-weight: bold;
+    letter-spacing: 2px;
+ 
+    background-color: green;
+}
+
+.button:hover{
+    cursor: pointer;
+}
+
+.button:active{
+    background-color: rgb(15, 85, 15);
+}
+
+.input-container{
+    display: block;
+    width: 100%;
+
+    padding: 10px;
+}
+
+.input-container:first-of-type{
+    margin-top: 15px;
+}
+
+.input-container > label{
+    margin-left: 10px;
+}
+
+input {
+    width: 20%;
+}
+ 
+
+
+/* .input-container > *{
+    margin-left: 10px;
+} */
+
+/******************** Game styles ********************/ 
+
+#game-container {
+    /* border: 1px solid red; */
+    width: 100vw;
+    height: 100vh;
+    /* overflow: hidden; */
+}
+    
+#stage-one, #stage-two, #stage-three{
+    height: 100%;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+
+    /* border: 1px solid red; */
 }
  
 .tile{
-    width: 75px;
-    height: 75px;
+    width: 95px;
+    height: 95px;
     position: absolute;
-    transform: translate(-50%, -50%) scaleX(0.555); /* 0.555 = 1 / 1.8  */
+
+    transform: translate(-50%, -50%);
 }
 
-.static{
+.static-tile{
     border-radius: 100%;
 }
 
-.static:hover{
-    box-shadow: 0px 0px 2px 2px white;
-    cursor: pointer;
-}
-
-#car-container{
+.car-container{
+    /* border: 1px solid red; */
     width: 20%;
     height: 15%;
     position: absolute;
-    /* border: 1px solid red; */
     transform: translate(-50%, -50%);
     left: 50%;
     top: 50%;
-    z-index: 10;
-    display: flex;
     justify-content: space-evenly;
     align-items: center;
+
+    flex-wrap: nowrap;
 
     background-image: none;
      
 }
 
-#car-container > img{
-    margin-left: 10px;
-    width: 140px;
+.car-container > img{
+    width: 40%;
 }
-
-#car-container > img:hover{
-    cursor: pointer;
-}
+ 
 
 #timer-container{
     position: absolute;
+    display: inline;
     left: 20px;
     top: 20px;
     font-weight: lighter;
     font-size: 2rem;
+}
+
+#countdown{
+    left: 50%;
+    top: 50%;
+    position: absolute;
+
+    transform: translate(-50%, -50%);
+
+    font-size: 4rem;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+
+    cursor: default;
+}
+
+#countdown:hover{
+    cursor: default;
+}
+
+.car-static-container{
+    background-image: url('./imgs/static.png');
+}
+
+
+/*************************** Results styles *************************/
+#results-container{
+    width: 66%;
+    position: absolute;
+    
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    padding: 20px;
+
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    
+    color: white;
+    background-color: rgba(26, 23, 23, 0.863);
+
+    border-radius: 45px 25px 45px 25px;
+
+    line-height: 35px;
+    font-size: 1.5rem;
+}
+
+#results-container > div{
+    margin-top: 10px;
+    font-size: 1.8rem;
+}
+
+.flex-container{
+    display: flex;
 }
 
 .hide{
@@ -163,61 +248,138 @@
                                     supported by Chrome, Edge, Opera and Firefox */
 }
 
-
-#countdown{
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-
-    font-size: 350%;
-    font-weight: bold;
-    color: white;
+.selectable:hover{
+    cursor: pointer;
+    border: 3px dashed white;
 }
 
-#countdown:hover{
-    cursor: default;
+.squish{
+    transform: scaleX(1.9);
 }
 
+.squish *{
+    transform: scaleX(calc(1 / 1.9));
+}
 
-@media only screen and (max-width: 1600px)
-{
-    #circle{ 
-        /*border: 1px solid red;*/
+.pre{
+    white-space: pre;
+}
+
+@media (max-aspect-ratio: 18/10) {
+    .squish{
+        transform: scaleX(1.7);
     }
-
-    #car-container > img{
-        width: 120px;
+    
+    .squish *{
+        transform: scaleX(calc(1 / 1.7));
     }
+  }
 
+  @media (max-aspect-ratio: 16/10) {
+    .squish{
+        transform: scaleX(1.5);
+    }
+    
+    .squish *{
+        transform: scaleX(calc(1 / 1.5));
+    }
+  }
+
+@media screen and (max-width: 1700px){
     .tile{
-        width: 59px;
-        height: 59px;
-    }
-}
-
-@media only screen and (max-width: 1200px)
-{
-    #circle{
         
-        /*border: 1px solid orange;*/
+        width: 85px;
+        height: 85px;
+        border: none;
+    }
+    .car-container{
+        width: 20%;
+    }
+}
+
+@media screen and (max-width: 1400px){
+    .tile{
+        width: 75px;
+        height: 75px;
+        border: none;
+    }
+
+    /* #instructions-container{
+        width: 85%;
+    } */
+
+    #instructions{
+        font-size: 1.4rem;
+    }
+
+
+    .input-container{
+        font-size: 1.4rem;
+    }
+}
+
+@media screen and (max-width: 1100px) {
+    /* Start */
+    #title{
+        font-size: 3rem;
+        padding: 25px;
+    }
+
+    #instructions-container{
+        width: 80%;
+    }
+
+    #instructions{
+        line-height: 150%;
+        font-size: 1.2rem;
+    }
+
+    .input-container{
+        font-size: 1rem;
+        padding: 7px 0px;
+    }
+
+    #results > div{
+        font-size: 1rem;
+    }
+
+    .button{
+        font-size: 1rem;
+        width: 30%;
+        min-width: 100px;
+        max-width: 200px;
+        padding: 5px;
+        margin-top: 15px;
     }
 
     .tile{
-        width: 53px;
-        height: 53px;
+        width: 65px;
+        height: 65px;
+        border: none;
     }
+}
 
-    #car-container > img{
-        margin-left: 10px;
-        width: 100px;
+
+@keyframes fromRight {
+    0%{
+        transform: translate(100%, 0%);
+        opacity: 0;
     }
+    50%{
+        opacity: 0;
+    }
+    100%{
+        transform: translate(0%, 0%);
+        opacity: 1;
+    }
+}
 
-    #start-container, #results-container{
-        font-size: 1rem;
-    } 
-
-    #timer-container{
-        font-size: 1.3rem;
+@keyframes appear {
+    from{
+        
+        transform: scale(0);
+    }
+    to{
+        transform: scale(1);
     }
 }
