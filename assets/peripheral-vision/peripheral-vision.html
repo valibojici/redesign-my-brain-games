@@ -13,15 +13,20 @@
 </head>
 <body>
     <div id="start-container" class="flex-container" >
-        <p>You must focus on the center of the screen where 1 type of car will appear. Using your peripheral vision you must identify and remember the position of the 'Route 66' sign. You will have limited time to do this. After this you must identify which car you saw and the position of the 'Route 66' sign. The test lasts 60 seconds.</p>
-        <button id="start-button" class="button">START</button>
-        <div class="input-container">
-            <input type="range" min='15' max='300' value="60" step="15" id="seconds-input" oninput='changeTextContent("seconds-value", calculateTime(this.value))'>
-            <label for="seconds-input" id="seconds-input-label" class="pre">Duration:   <span id="seconds-value">01:00</span> (min/sec)</label>
+        <div id='title-outer'>
+            <h1 id='title'>Peripheral vision test</h1>
         </div>
-        <div class="input-container">
-            <input type="range" min='100' max='1500' value="500" step="25" id="reaction-time-input" oninput='changeTextContent("reaction-time-value", this.value)'>
-            <label for="reaction-time-input" id="reaction-time-input-label" class="pre">Reaction time:  <span id="reaction-time-value">500</span>ms</label>
+        <div id="instructions-container" class="flex-container">
+            <p id='instructions'>You must focus on the center of the screen where 1 type of car will appear. Using your peripheral vision you must identify and remember the position of the 'Route 66' sign. You will have limited time to do this. After this you must identify which car you saw and the position of the 'Route 66' sign. The test lasts 60 seconds.</p>
+            <button id="start-button" class="button">START</button>
+            <div class="input-container">
+                <input type="range" min='15' max='300' value="60" step="15" id="seconds-input" oninput='changeTextContent("seconds-value", calculateTime(this.value))'>
+                <label for="seconds-input" id="seconds-input-label" class="pre">Duration:   <span id="seconds-value">01:00</span> (min/sec)</label>
+            </div>
+            <div class="input-container">
+                <input type="range" min='100' max='1500' value="500" step="25" id="reaction-time-input" oninput='changeTextContent("reaction-time-value", this.value)'>
+                <label for="reaction-time-input" id="reaction-time-input-label" class="pre">Reaction time:  <span id="reaction-time-value">500</span>ms</label>
+            </div>
         </div>
     </div>
 
@@ -34,7 +39,7 @@
             <div class="middle-tiles tiles squish"></div>
             <div class="inner-tiles tiles squish"></div>
             <div class="car-container flex-container">
-                <img src="./imgs/car1.png" alt="">
+                <img src="./imgs/car1.png" class='noselect' alt="">
             </div>
         </div>
 
@@ -46,15 +51,18 @@
 
         <div id="stage-three" class="hide">
             <div class="outer-tiles tiles squish"></div>
-            <div class="car-container flex-container"></div>
+            <div class="car-container flex-container">
+                <img src="./imgs/car1.png" class='noselect' alt="">
+                <img src="./imgs/car2.png" class='noselect' alt="">
+            </div>
         </div>
     </div>
 
     <div id="results-container" class="flex-container hide">
         <div>Correct answers: <span id='correct'></span></div>
         <div>Incorrect answers: <span id='incorrect'></span></div>
-        <div>Accuracy: <span id='accuracy'></span></div>
-        <div>Best reaction time: <span id='best-react'></span></div>
+        <div>Accuracy: <span id='accuracy'></span>%</div>
+        <div>Best reaction time: <span id='best-react'></span>ms</div>
         <button id='try-again-button' class="button">Try again</button>
     </div>
  

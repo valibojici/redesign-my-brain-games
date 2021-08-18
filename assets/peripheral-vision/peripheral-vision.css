@@ -19,28 +19,72 @@ body{
 
 /* Instructions styles */
 
-#start-container, #results-container{
-    width: 66%;
-    height: 40%;
-    position: absolute;
-    
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-
-    padding: 25px;
-
+#start-container{
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    height: auto;
+    width: 100vw;
+
+    font-weight: bold;
     
-    color: white;
-    background-color: rgba(26, 23, 23, 0.863);
+    
+}
 
-    border-radius: 25px;
+#title{
+    font-size: 4.5rem;
+    padding: 50px;
+    text-shadow: 2.5px 2.5px rgba(255, 255, 255, 0.452);
+    animation: fromRight 600ms ease-in-out;
+}
 
-    line-height: 35px;
+#title-outer{
+    overflow: hidden;
+}
+
+#instructions-container{
     font-size: 1.5rem;
+    font-weight: normal;
+    overflow: hidden;
+    position: relative;
+    width: 66%;
+    height: auto;
+    
+    background-color: rgba(26, 23, 23, 0.863);
+    color: whitesmoke;
+
+    padding: 20px;
+    border-radius: 45px 25px 45px 25px;
+    animation: appear 400ms 700ms ease backwards;
+    transform-origin: left center;
+    
+    align-items: center;
+    flex-direction: column;
+
+    line-height: 30px;
+}
+
+@keyframes fromRight {
+    0%{
+        transform: translate(100%, 0%);
+        opacity: 0;
+    }
+    50%{
+        opacity: 0;
+    }
+    100%{
+        transform: translate(0%, 0%);
+        opacity: 1;
+    }
+}
+
+@keyframes appear {
+    from{
+        
+        transform: scale(0);
+    }
+    to{
+        transform: scale(1);
+    }
 }
 
 .button{
@@ -119,7 +163,6 @@ input {
     transform: translate(-50%, -50%);
     left: 50%;
     top: 50%;
-    z-index: -1;
     justify-content: space-evenly;
     align-items: center;
 
@@ -166,6 +209,30 @@ input {
 }
 
 
+/*************************** Results styles *************************/
+#results-container{
+    width: 66%;
+    position: absolute;
+    
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    padding: 25px;
+
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    
+    color: white;
+    background-color: rgba(26, 23, 23, 0.863);
+
+    border-radius: 25px;
+
+    line-height: 35px;
+    font-size: 1.5rem;
+}
+
 .flex-container{
     display: flex;
 }
@@ -206,5 +273,39 @@ input {
         width: 69px;
         height: 69px;
         border: none;
+    }
+}
+
+@media screen and (max-width: 1100px) {
+    /* Start */
+    #title{
+        font-size: 3rem;
+        padding: 20px;
+    }
+
+    #instructions-container{
+        width: 85%;
+    }
+
+    #instructions{
+        line-height: 150%;
+        font-size: 1.1rem;
+    }
+
+    .input-container{
+        font-size: 1rem;
+        padding: 7px 0px;
+    }
+
+    #results > div{
+        font-size: 1.3rem;
+    }
+
+    .button{
+        font-size: 1rem;
+        width: 30%;
+        min-width: 100px;
+        padding: 5px;
+        margin-top: 15px;
     }
 }
