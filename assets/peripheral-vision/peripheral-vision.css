@@ -312,6 +312,10 @@ input {
         font-size: 1.4rem;
     }
 
+    #results-container > div{
+ 
+        font-size: 1.4rem;
+    }
 
     .input-container{
         font-size: 1.4rem;
@@ -339,8 +343,9 @@ input {
         padding: 7px 0px;
     }
 
-    #results > div{
-        font-size: 1rem;
+    #results-container > div{
+ 
+        font-size: 1.2rem;
     }
 
     .button{
@@ -350,6 +355,7 @@ input {
         max-width: 200px;
         padding: 5px;
         margin-top: 15px;
+        letter-spacing: 2px;
     }
 
     .tile{
