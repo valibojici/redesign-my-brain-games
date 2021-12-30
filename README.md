@@ -1,4 +1,5 @@
 # redesign-my-brain-games
-Games from the documentary 'Redesign my brain' (S1 E1)
 
-```index.html``` is the home page. Navigate to the games from here.
+Some games i made in javascript from the documentary 'Redesign your brain'. More about the documentary on (wikipedia)[https://en.wikipedia.org/wiki/Redesign_My_Brain]
+
+https://redesign-my-brain-games.netlify.app
