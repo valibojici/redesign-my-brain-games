@@ -1,4 +1,4 @@
-# redesign-my-brain-games
+# Redesign My Brain games
 
 Some games i made in javascript from the documentary '__Redesign My Brain__'. More about the documentary on [Wikipedia](https://en.wikipedia.org/wiki/Redesign_My_Brain)
 
